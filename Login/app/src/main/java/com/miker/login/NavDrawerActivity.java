@@ -21,6 +21,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.gson.Gson;
 import com.miker.login.carrera.CarrerasActivity;
 import com.miker.login.curso.CursosActivity;
+import com.miker.login.curso_x_estudiante.MatriculaActivity;
 
 public class NavDrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -99,7 +100,7 @@ public class NavDrawerActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_matricula) {
-            Intent intent = new Intent(NavDrawerActivity.this, CarrerasActivity.class);
+            Intent intent = new Intent(NavDrawerActivity.this, MatriculaActivity.class);
             NavDrawerActivity.this.startActivity(intent);
             // Handle the camera action
         } else if (id == R.id.nav_cursos) {

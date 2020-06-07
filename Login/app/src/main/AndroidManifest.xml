@@ -45,6 +45,10 @@
             android:name=".carrera.CarreraActivity"
             android:label="@string/backdrop_title2"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".curso_x_estudiante.MatriculaActivity"
+            android:label="@string/backdrop_title"
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 

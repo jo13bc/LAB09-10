@@ -78,5 +78,7 @@
     <string name="item_cursos">Cursos</string>
     <string name="item_carreras">Carreras</string>
     <string name="item_serch">Buscar</string>
+    <string name="btn_cancel">Cancelar</string>
+    <string name="btn_accept">Aceptar</string>
 
 </resources>
