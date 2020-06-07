@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -24,7 +25,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.miker.login.Helper.RecyclerItemTouchHelper;
 import com.miker.login.Model;
 import com.miker.login.NavDrawerActivity;
@@ -32,14 +32,11 @@ import com.miker.login.R;
 import com.miker.login.Servicio;
 import com.miker.login.ServicioCurso;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 import static com.miker.login.EncodingUtil.encodeURIComponent;
-import static com.miker.login.ServicioCurso.DELETE_CURSO_URL;
-import static com.miker.login.ServicioCurso.INSERT_CURSO_URL;
-import static com.miker.login.ServicioCurso.LIST_CURSO_URL;
-import static com.miker.login.ServicioCurso.UPDATE_CURSO_URL;
 
 public class CursosActivity extends AppCompatActivity implements RecyclerItemTouchHelper.RecyclerItemTouchHelperListener, CursosAdapter.CursoAdapterListener {
 
@@ -52,6 +49,7 @@ public class CursosActivity extends AppCompatActivity implements RecyclerItemTou
     private FloatingActionButton btn_insert;
     private Model model;
     private ProgressDialog progressDialog;
+    private ServicioCurso servicio;
     private String message;
 
     @Override
@@ -60,6 +58,8 @@ public class CursosActivity extends AppCompatActivity implements RecyclerItemTou
         setContentView(R.layout.activity_cursos);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        servicio = new ServicioCurso(getApplicationContext());
 
         //toolbar fancy stuff
         getSupportActionBar().setTitle(getString(R.string.item_cursos));
@@ -185,7 +185,7 @@ public class CursosActivity extends AppCompatActivity implements RecyclerItemTou
 
     @Override
     public void onSelected(Curso curso) { //TODO get the select item of recycleView
-        Toast.makeText(getApplicationContext(), "Selected: " + curso.getCodigo() + ", " + curso.getNombre(), Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "Selected: " + curso.getDescripcion(), Toast.LENGTH_LONG).show();
     }
 
     public class checkIntentInformation extends AsyncTask<String, String, String> {
@@ -213,15 +213,15 @@ public class CursosActivity extends AppCompatActivity implements RecyclerItemTou
                         aux = (Curso) getIntent().getSerializableExtra("update");
                         if (aux != null) {
                             //found an item that can be updated
-                            result = Servicio.run(UPDATE_CURSO_URL + "&json=" + encodeURIComponent(ServicioCurso.insert(aux)));
+                            servicio.update(aux);
                             //check if exist
-                            message = aux.getNombre() + " actualizado correctamente";
+                            message = aux.getDescripcion() + " actualizado correctamente";
 
                         }
                     } else {
                         //found a new Curso Object
-                        result = Servicio.run(INSERT_CURSO_URL + "&json=" + encodeURIComponent(ServicioCurso.insert(aux)));
-                        message = aux.getNombre() + " agregado correctamente";
+                        servicio.insert(aux);
+                        message = aux.getDescripcion() + " agregado correctamente";
                     }
                 }
             } catch (Exception ex) {
@@ -264,7 +264,21 @@ public class CursosActivity extends AppCompatActivity implements RecyclerItemTou
             message = "";
             String result = "";
             try {
-                result = Servicio.run(LIST_CURSO_URL);
+                Cursor cursor = servicio.list();
+                if (cursor != null) {
+                    if (cursor.moveToFirst()) {
+                        cursoList = new ArrayList<>();
+                        do {
+                            Curso curso = new Curso();
+                            curso.setId(cursor.getInt(cursor.getColumnIndex(ServicioCurso.cursoEntry.ID)));
+                            curso.setDescripcion(cursor.getString(cursor.getColumnIndex(ServicioCurso.cursoEntry.DESCRIPCION)));
+                            curso.setCreditos(cursor.getInt(cursor.getColumnIndex(ServicioCurso.cursoEntry.CREDITOS)));
+                            //
+                            cursoList.add(curso);
+                        } while (cursor.moveToNext());
+                    }
+                    cursor.close();
+                }
             } catch (Exception ex) {
                 message = ex.getMessage();
             }
@@ -277,7 +291,6 @@ public class CursosActivity extends AppCompatActivity implements RecyclerItemTou
             progressDialog.dismiss();
             //Json
             try {
-                cursoList = ServicioCurso.list(s);
                 showCursos();
             } catch (Exception ex) {
                 Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
@@ -308,7 +321,7 @@ public class CursosActivity extends AppCompatActivity implements RecyclerItemTou
             super.onPreExecute();
             // display a progress dialog for good user experiance
             progressDialog = new ProgressDialog(CursosActivity.this);
-            progressDialog.setMessage("¡Eliminando " + deleteCurso.getNombre() + "!");
+            progressDialog.setMessage("¡Eliminando " + deleteCurso.getDescripcion() + "!");
             progressDialog.setCancelable(false);
             progressDialog.show();
         }
@@ -317,8 +330,8 @@ public class CursosActivity extends AppCompatActivity implements RecyclerItemTou
         protected String doInBackground(String... args) {
             message = "";
             try {
-                Servicio.run(DELETE_CURSO_URL + "&json=" + encodeURIComponent(deleteCurso.getJSON().toString()));
-                message = deleteCurso.getNombre() + " eliminado correctamente";
+                servicio.delete(deleteCurso);
+                message = deleteCurso.getDescripcion() + " eliminado correctamente";
             } catch (Exception ex) {
                 message = ex.getMessage();
             }

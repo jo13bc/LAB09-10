@@ -16,13 +16,8 @@ import com.miker.login.carrera.Carrera;
 public class CursoActivity extends AppCompatActivity {
 
     private FloatingActionButton btn_insert_update;
-    private TextView codigo;
-    private TextView nombre;
+    private TextView descripcion;
     private TextView creditos;
-    private TextView horas_semana;
-    private TextView anno;
-    private TextView ciclo;
-    private TextView carrera;
     private Curso curso = new Curso();
 
     @Override
@@ -38,13 +33,8 @@ public class CursoActivity extends AppCompatActivity {
         // view
         setContentView(R.layout.activity_curso);
         //textview
-        codigo = findViewById(R.id.codigo);
-        nombre = findViewById(R.id.nombre);
+        descripcion = findViewById(R.id.nombre);
         creditos = findViewById(R.id.creditos);
-        horas_semana = findViewById(R.id.hora_semana);
-        ciclo = findViewById(R.id.ciclo);
-        carrera = findViewById(R.id.carrera);
-        anno = findViewById(R.id.anno);
         //button
         btn_insert_update = findViewById(R.id.btn_insert_update);
         btn_insert_update.show();
@@ -52,23 +42,13 @@ public class CursoActivity extends AppCompatActivity {
 
     private void load_curso(Curso curso) {
         this.curso.setId(curso.getId());
-        codigo.setText(curso.getCodigo());
-        nombre.setText(curso.getNombre());
+        descripcion.setText(curso.getDescripcion());
         creditos.setText(String.valueOf(curso.getCreditos()));
-        horas_semana.setText(String.valueOf(curso.getHora_semana()));
-        anno.setText(String.valueOf(curso.getAnno()));
-        ciclo.setText(String.valueOf(curso.getCiclo().getId()));
-        carrera.setText(String.valueOf(curso.getCarrera().getId()));
     }
 
     private void clean() {
-        codigo.setText("");
-        nombre.setText("");
+        descripcion.setText("");
         creditos.setText("");
-        horas_semana.setText("");
-        anno.setText("");
-        ciclo.setText("");
-        carrera.setText("");
         curso = new Curso();
     }
 
@@ -104,45 +84,20 @@ public class CursoActivity extends AppCompatActivity {
 
     public boolean validateForm() {
         int error = 0;
-        if (TextUtils.isEmpty(this.codigo.getText())) {
-            codigo.setError("Código requerido");
-            error++;
-        }
-        if (TextUtils.isEmpty(this.nombre.getText())) {
-            nombre.setError("Nombre requerido");
+        if (TextUtils.isEmpty(this.descripcion.getText())) {
+            descripcion.setError("Nombre requerido");
             error++;
         }
         if (TextUtils.isEmpty(this.creditos.getText())) {
             creditos.setError("Cantidad de creditos requerida");
             error++;
         }
-        if (TextUtils.isEmpty(this.horas_semana.getText())) {
-            horas_semana.setError("Horas a la semana requeridas");
-            error++;
-        }
-        if (TextUtils.isEmpty(this.anno.getText())) {
-            anno.setError("Año requerido");
-            error++;
-        }
-        if (TextUtils.isEmpty(this.ciclo.getText())) {
-            ciclo.setError("Ciclo requerido");
-            error++;
-        }
-        if (TextUtils.isEmpty(this.carrera.getText())) {
-            carrera.setError("Carrera requerida");
-            error++;
-        }
         if (error > 0) {
             Toast.makeText(getApplicationContext(), "Algunos errores", Toast.LENGTH_LONG).show();
             return false;
         } else {
-            curso.setCodigo(codigo.getText().toString());
-            curso.setNombre(nombre.getText().toString());
+            curso.setDescripcion(descripcion.getText().toString());
             curso.setCreditos(Integer.parseInt(creditos.getText().toString()));
-            curso.setHora_semana(Integer.parseInt(horas_semana.getText().toString()));
-            curso.setAnno(Integer.parseInt(anno.getText().toString()));
-            curso.setCiclo(new Ciclo(Integer.parseInt(ciclo.getText().toString())));
-            curso.setCarrera(new Carrera(Integer.parseInt(carrera.getText().toString())));
         }
         return true;
     }

@@ -1,73 +1,111 @@
 package com.miker.login;
 
-import android.app.ProgressDialog;
-import android.os.AsyncTask;
-import android.widget.Toast;
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.provider.BaseColumns;
 
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.gson.Gson;
 import com.miker.login.curso.Curso;
-import com.miker.login.curso.CursosActivity;
-import com.miker.login.curso.CursosAdapter;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import static com.miker.login.Utils.cursoToContentValues;
 
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+public class ServicioCurso extends SQLiteOpenHelper {
 
-import static com.miker.login.Model.LIST_CURSO_URL;
-
-public class ServicioCurso {
-    public final static String LIST_CURSO_URL = "http://10.0.2.2:8080/SIMA/curso?opcion=list";
-    public final static String INSERT_CURSO_URL = "http://10.0.2.2:8080/SIMA/curso?opcion=insert";
-    public final static String UPDATE_CURSO_URL = "http://10.0.2.2:8080/SIMA/curso?opcion=update";
-    public final static String DELETE_CURSO_URL = "http://10.0.2.2:8080/SIMA/curso?opcion=delete";
-    private final static Gson gson = new Gson();
-    private final static ServicioCurso servicioCurso = new ServicioCurso();
-
-    public static ServicioCurso getServicioCurso() {
-        return servicioCurso;
+    public static abstract class cursoEntry implements BaseColumns {
+        public static final String TABLE_NAME = "CURSO";
+        public static final String ID = "id";
+        public static final String DESCRIPCION = "descripcion";
+        public static final String CREDITOS = "creditos";
     }
 
-    public static String insert(Curso object) throws Exception {
-        return object.getJSON().toString();
+    public static final int DATABASE_VERSION = 1;
+    public static final String DATABASE_NAME = "SIMA.db";
+
+    public ServicioCurso(Context context) {
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    public static String update(Curso object) {
-        return gson.toJson(object);
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + cursoEntry.TABLE_NAME + " ("
+                + cursoEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + cursoEntry.ID + " INTEGER NOT NULL,"
+                + cursoEntry.DESCRIPCION + " TEXT NOT NULL,"
+                + cursoEntry.CREDITOS + " INTEGER NOT NULL,"
+                + "UNIQUE (" + cursoEntry.ID + "))");
+
+
+        // Insertar datos ficticios para prueba inicial
+        registroData(db);
     }
 
-    public static String delete(Curso object) {
-        return gson.toJson(object);
+    private void registroData(SQLiteDatabase sqLiteDatabase) {
+        mockCurso(sqLiteDatabase, new Curso(1, "Programación I", 3));
+        mockCurso(sqLiteDatabase, new Curso(2, "Programación II", 3));
     }
 
-    public static Curso query(String json_format) throws Exception {
-        return gson.fromJson(json_format, Curso.class);
+    public long mockCurso(SQLiteDatabase db, Curso curso) {
+        return db.insert(
+                cursoEntry.TABLE_NAME,
+                null,
+                cursoToContentValues(curso)
+        );
     }
 
-    public static List<Curso> list(String json_format) throws Exception {
-        List<Curso> list = new ArrayList<>();
-        try {
-            JSONArray JSONList = new JSONArray(json_format);
-            for (int i = 0; i < JSONList.length(); i++) {
-                JSONObject dataDetail = JSONList.getJSONObject(i);
-                list.add(
-                        gson.fromJson(dataDetail.toString(), Curso.class)
-                );
-            }
-        } catch (JSONException e) {
-            throw e;
-        }
-        return list;
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        // No hay operaciones
+    }
+
+    public long insert(Curso curso) {
+        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
+
+        return sqLiteDatabase.insert(
+                cursoEntry.TABLE_NAME,
+                null,
+                cursoToContentValues(curso)
+        );
+
+    }
+
+    public Cursor list() {
+        return getReadableDatabase()
+                .query(
+                        cursoEntry.TABLE_NAME,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null,
+                        null);
+    }
+
+    public Cursor query(Curso curso) {
+        Cursor c = getReadableDatabase().query(
+                cursoEntry.TABLE_NAME,
+                null,
+                cursoEntry.ID + " LIKE ?",
+                new String[]{String.valueOf(curso.getId())},
+                null,
+                null,
+                null);
+        return c;
+    }
+
+    public int delete(Curso curso) {
+        return getWritableDatabase().delete(
+                cursoEntry.TABLE_NAME,
+                cursoEntry.ID + " LIKE ?",
+                new String[]{String.valueOf(curso.getId())});
+    }
+
+    public int update(Curso curso) {
+        return getWritableDatabase().update(
+                cursoEntry.TABLE_NAME,
+                cursoToContentValues(curso),
+                cursoEntry.ID + " LIKE ?",
+                new String[]{String.valueOf(curso.getId())}
+        );
     }
 }

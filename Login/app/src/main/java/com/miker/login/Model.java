@@ -43,7 +43,6 @@ public class Model {
     public Model() {
         this.loggedUser = new User();
         initCovers();
-        initCarreras();
         initUsers();
     }
 
@@ -113,19 +112,6 @@ public class Model {
                 R.drawable.producto4};
     }
 
-    public void initCarreras() {
-        cursos = new ArrayList<Curso>();
-
-        Curso a = new Curso(1, "B101", "Programacion I", 4, 8, 1, new Ciclo(1), new Carrera(1));
-        cursos.add(a);
-
-        a = new Curso(2, "B102", "Programacion II", 4, 8, 1, new Ciclo(1), new Carrera(1));
-        cursos.add(a);
-
-        a = new Curso(3, "B103", "Programacion III", 4, 8, 2, new Ciclo(1), new Carrera(1));
-        cursos.add(a);
-    }
-
     public void initUsers() {
 
         users = new ArrayList<User>();
@@ -136,14 +122,11 @@ public class Model {
 
         ArrayList<Curso> pp = new ArrayList<Curso>();
         ArrayList<Carrera> cc = new ArrayList<Carrera>();
-        pp.add(new Curso(1, "B101", "Programacion I", 4, 8, 1, new Ciclo(1), new Carrera(1)));
-        pp.add(new Curso(2, "B102", "Programacion II", 4, 8, 1, new Ciclo(1), new Carrera(1)));
         u = new User("Allan", 2, pp, cc, "@allan", "");
         users.add(u);
 
         pp = new ArrayList<Curso>();
         cc = new ArrayList<Carrera>();
-        pp.add(new Curso(3, "B103", "Programacion III", 4, 8, 2, new Ciclo(1), new Carrera(1)));
         u = new User("Luis", 2, pp, cc, "@luis", "");
         users.add(u);
     }

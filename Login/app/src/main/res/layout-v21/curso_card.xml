@@ -75,7 +75,7 @@
             android:textSize="@dimen/album_title" />
 
         <TextView
-            android:id="@+id/codigo"
+            android:id="@+id/creditos"
             android:layout_below="@id/nombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

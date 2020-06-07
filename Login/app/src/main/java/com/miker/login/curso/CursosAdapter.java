@@ -28,13 +28,13 @@ public class CursosAdapter extends RecyclerView.Adapter<CursosAdapter.MyViewHold
     private Curso object;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView codigo, nombre;
+        public TextView nombre, creditos;
         public RelativeLayout viewForeground, viewBackgroundDelete, viewBackgroundEdit;
 
         public MyViewHolder(View view) {
             super(view);
-            codigo = (TextView) view.findViewById(R.id.codigo);
             nombre = (TextView) view.findViewById(R.id.nombre);
+            creditos = (TextView) view.findViewById(R.id.creditos);
             viewBackgroundDelete = view.findViewById(R.id.view_background_delete);
             viewBackgroundEdit = view.findViewById(R.id.view_background_edit);
             viewForeground = view.findViewById(R.id.view_foreground);
@@ -65,8 +65,8 @@ public class CursosAdapter extends RecyclerView.Adapter<CursosAdapter.MyViewHold
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final Curso curso = cursoListFiltered.get(position);
-        holder.codigo.setText(curso.getCodigo());
-        holder.nombre.setText(curso.getNombre());
+        holder.nombre.setText(curso.getDescripcion());
+        holder.creditos.setText(String.valueOf(curso.getCreditos()));
     }
 
     @Override
@@ -144,7 +144,7 @@ public class CursosAdapter extends RecyclerView.Adapter<CursosAdapter.MyViewHold
                     List<Curso> filteredList = new ArrayList<>();
                     for (Curso row : cursoList) {
                         // filter use two parameters
-                        if (row.getCodigo().toLowerCase().contains(charString.toLowerCase()) || row.getNombre().toLowerCase().contains(charString.toLowerCase())) {
+                        if (row.getDescripcion().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);
                         }
                     }
