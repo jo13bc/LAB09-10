@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -22,11 +23,17 @@ import com.google.gson.Gson;
 import com.miker.login.carrera.CarrerasActivity;
 import com.miker.login.curso.CursosActivity;
 import com.miker.login.curso_x_estudiante.MatriculaActivity;
+import com.miker.login.estudiante.Estudiante;
+import com.miker.login.estudiante.EstudiantesActivity;
 
 public class NavDrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private SharedPreferences mPrefs;
+    private Model model;
+    Administrador administrador;
+    Estudiante estudiante;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +61,23 @@ public class NavDrawerActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        model = (Model) getIntent().getSerializableExtra("model");
+        administrador = model.getLoggedAdministrador();
+        estudiante = model.getLoggedEstudiante();
+        Menu menu = navigationView.getMenu();
+
+        LinearLayout layout = (LinearLayout) navigationView.getHeaderView(0);
+
+        if(administrador!= null){
+            menu.findItem(R.id.nav_matricula).setVisible(false);
+        }
+        if(estudiante != null){
+            menu.findItem(R.id.nav_cursos).setVisible(false);
+            menu.findItem(R.id.nav_estudiantes).setVisible(false);
+        }
+
+
     }
 
     @Override
@@ -91,29 +115,40 @@ public class NavDrawerActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-
+        Intent  intent = null;
         Gson gson = new Gson();
         String json = mPrefs.getString(getString(R.string.preference_user_key), "");
-        Model model = gson.fromJson(json, Model.class);
-        int privilegio = model.getLoggedUser().getPrivilege();
-        // Handle navigation view item clicks here.
+
+        if(model == null){
+            model = new Model();
+        }
         int id = item.getItemId();
 
-        if (id == R.id.nav_matricula) {
-            Intent intent = new Intent(NavDrawerActivity.this, MatriculaActivity.class);
-            NavDrawerActivity.this.startActivity(intent);
-            // Handle the camera action
-        } else if (id == R.id.nav_cursos) {
-            Intent intent = new Intent(NavDrawerActivity.this, CursosActivity.class);
-            NavDrawerActivity.this.startActivity(intent);
-        } else if (id == R.id.nav_carreras) {
-            Intent intent = new Intent(NavDrawerActivity.this, CarrerasActivity.class);
-            NavDrawerActivity.this.startActivity(intent);
-        }  else if (id == R.id.nav_logout) {
-            finish();
-            Intent intent = new Intent(NavDrawerActivity.this, LoginActivity.class);
-            NavDrawerActivity.this.startActivity(intent);
+        if(!model.esAdmin){
+            if (id == R.id.nav_matricula) {
+                intent = new Intent(NavDrawerActivity.this, MatriculaActivity.class);
+                NavDrawerActivity.this.startActivity(intent);
+                // Handle the camera action
+            }else if (id == R.id.nav_logout) {
+                finish();
+                intent = new Intent(NavDrawerActivity.this, LoginActivity.class);
+                NavDrawerActivity.this.startActivity(intent);
+            }
+        }else{
+            if (id == R.id.nav_cursos) {
+                intent = new Intent(NavDrawerActivity.this, CursosActivity.class);
+                NavDrawerActivity.this.startActivity(intent);
+            } else if (id == R.id.nav_estudiantes) {
+                intent = new Intent(NavDrawerActivity.this, EstudiantesActivity.class);
+                NavDrawerActivity.this.startActivity(intent);
+            }  else if (id == R.id.nav_logout) {
+                finish();
+                intent = new Intent(NavDrawerActivity.this, LoginActivity.class);
+                NavDrawerActivity.this.startActivity(intent);
+            }
         }
+        intent.putExtra("model", model);
+        startActivityForResult(intent, 0);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

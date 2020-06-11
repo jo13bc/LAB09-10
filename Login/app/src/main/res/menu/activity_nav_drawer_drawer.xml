@@ -13,10 +13,9 @@
             android:icon="@android:drawable/ic_menu_sort_by_size"
             android:title="@string/item_cursos" />
         <item
-            android:id="@+id/nav_carreras"
+            android:id="@+id/nav_estudiantes"
             android:icon="@android:drawable/ic_menu_sort_by_size"
-            android:title="@string/item_carreras" />
-
+            android:title="@string/item_estudiantes" />
     </group>
 
     <item android:title="User options">
