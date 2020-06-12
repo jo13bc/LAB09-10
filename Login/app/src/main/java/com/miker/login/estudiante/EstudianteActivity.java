@@ -16,7 +16,7 @@ import com.miker.login.carrera.Carrera;
 public class EstudianteActivity extends AppCompatActivity {
 
     private FloatingActionButton btn_insert_update;
-    private TextView nombre, apell1, apell2, edad, cedula, user, pass;
+    private TextView nombre, apell1, apell2, edad,  user, pass;
     private Estudiante estudiante = new Estudiante();
 
     @Override

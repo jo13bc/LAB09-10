@@ -33,10 +33,7 @@ import com.miker.login.NavDrawerActivity;
 import com.miker.login.R;
 import com.miker.login.ServicioCurso;
 import com.miker.login.ServicioEstudiante;
-import com.miker.login.curso.Curso;
-import com.miker.login.curso.CursoActivity;
-import com.miker.login.curso.CursosActivity;
-import com.miker.login.curso.CursosAdapter;
+import com.miker.login.estudiante.Estudiante;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +55,7 @@ public class EstudiantesActivity extends AppCompatActivity implements RecyclerIt
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_cursos);
+            setContentView(R.layout.activity_estudiantes);
             Toolbar toolbar = findViewById(R.id.toolbar);
             setSupportActionBar(toolbar);
 
@@ -96,7 +93,7 @@ public class EstudiantesActivity extends AppCompatActivity implements RecyclerIt
         @Override
         public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
             if (direction == ItemTouchHelper.START) {
-                if (viewHolder instanceof CursosAdapter.MyViewHolder) {
+                if (viewHolder instanceof EstudiantesAdapter.MyViewHolder) {
                     // get the removed item name to display it in snack bar
                     deleteCurso = cursoList.get(viewHolder.getAdapterPosition());
                     com.miker.login.estudiante.EstudiantesActivity.delete delete = new com.miker.login.estudiante.EstudiantesActivity.delete();
@@ -106,7 +103,7 @@ public class EstudiantesActivity extends AppCompatActivity implements RecyclerIt
                 //If is editing a row object
                 Estudiante aux = adapter.getSwipedItem(viewHolder.getAdapterPosition());
                 //send data to Edit Activity
-                Intent intent = new Intent(this, CursoActivity.class);
+                Intent intent = new Intent(this, EstudiantesAdapter.class);
                 intent.putExtra("object", aux);
                 adapter.notifyDataSetChanged(); //restart left swipe view
                 startActivity(intent);
@@ -187,8 +184,8 @@ public class EstudiantesActivity extends AppCompatActivity implements RecyclerIt
         }
 
         @Override
-        public void onSelected(Estudiante curso) { //TODO get the select item of recycleView
-            Toast.makeText(getApplicationContext(), "Selected: " + curso.getNombre(), Toast.LENGTH_LONG).show();
+        public void onSelected(Estudiante estudiante) { //TODO get the select item of recycleView
+            Toast.makeText(getApplicationContext(), "Selected: " + estudiante.getNombre(), Toast.LENGTH_LONG).show();
         }
 
 
@@ -224,7 +221,7 @@ public class EstudiantesActivity extends AppCompatActivity implements RecyclerIt
 
                             }
                         } else {
-                            //found a new Curso Object
+                            //found a new Estudiante Object
                             servicio.insert(aux);
                             message = aux.getNombre() + " agregado correctamente";
                         }
@@ -365,7 +362,7 @@ public class EstudiantesActivity extends AppCompatActivity implements RecyclerIt
         }
 
         private void insert_estudiante() {
-            //  Intent intent = new Intent(this, EstudianteActivity.class);
-         //   startActivity(intent);
+             Intent intent = new Intent(this, EstudianteActivity.class);
+            startActivity(intent);
         }
     }
