@@ -1,11 +1,15 @@
 package com.miker.login;
 
+import android.database.Cursor;
 import android.util.Log;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 import com.miker.login.carrera.Carrera;
 import com.miker.login.curso.Ciclo;
 import com.miker.login.curso.Curso;
+import com.miker.login.estudiante.Estudiante;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -13,6 +17,7 @@ import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
@@ -22,44 +27,33 @@ import java.sql.Date;
  * Created by HsingPC on 20/4/2018.
  */
 
-public class Model {
+public class Model extends AppCompatActivity implements Serializable {
     private String apiUrl = "http://10.0.2.2:56884/BackEnd/ServeletUser";
     public final static String LIST_CURSO_URL = "http://10.0.2.2:8080/SIMA/curso?opcion=list";
-    private ArrayList<User> users;
-    private User loggedUser;
+    private Estudiante loggedEstudiante;
     private ArrayList<Curso> cursos;
     private ArrayList<Carrera> carreras;
     private int[] covers;
     private final static Gson gson = new Gson();
 
-    public Model(ArrayList<User> users, User loggedUser, ArrayList<Curso> cursos, ArrayList<Carrera> carreras, int[] covers) {
-        this.users = users;
-        this.loggedUser = loggedUser;
+    public Model(Estudiante loggedUser, ArrayList<Curso> cursos, ArrayList<Carrera> carreras, int[] covers) {
+        this.loggedEstudiante = loggedUser;
         this.cursos = cursos;
         this.carreras = carreras;
         this.covers = covers;
     }
 
     public Model() {
-        this.loggedUser = new User();
-        initCovers();
+        this.loggedEstudiante = new Estudiante();
         initUsers();
     }
 
-    public ArrayList<User> getUsers() {
-        return users;
+    public Estudiante getLoggedEstudiante() {
+        return loggedEstudiante;
     }
 
-    public void setUsers(ArrayList<User> users) {
-        this.users = users;
-    }
-
-    public User getLoggedUser() {
-        return loggedUser;
-    }
-
-    public void setLoggedUser(User loggedUser) {
-        this.loggedUser = loggedUser;
+    public void setLoggedEstudiante(Estudiante loggedEstudiante) {
+        this.loggedEstudiante = loggedEstudiante;
     }
 
     public ArrayList<Curso> getCursos() {
@@ -89,47 +83,21 @@ public class Model {
     @Override
     public String toString() {
         return "Model{" +
-                "users=" + users +
-                ", loggedUser=" + loggedUser +
+                " loggedEstudiante=" + loggedEstudiante +
                 ", cursos=" + cursos +
                 ", carreras=" + carreras +
                 '}';
     }
 
-    public void cargaDatos() {
-
-    }
-
-    public void initCovers() {
-        covers = new int[]{
-                R.drawable.producto1,
-                R.drawable.producto2,
-                R.drawable.producto3,
-                R.drawable.producto4,
-                R.drawable.producto1,
-                R.drawable.producto2,
-                R.drawable.producto3,
-                R.drawable.producto4};
-    }
-
     public void initUsers() {
 
-        users = new ArrayList<User>();
+        //   users = new ArrayList<User>();
 
         // User(String name, int privilege, ArrayList<Product> selectedProducts, String email, String password)
-        User u = new User("JDMurillo", 1, new ArrayList<Curso>(), new ArrayList<Carrera>(), "@co", "123456");
-        users.add(u);
+        //  User u = new User("JDMurillo", 1, new ArrayList<Curso>(), new ArrayList<Carrera>(), "@co", "123456");
+        //   users.add(u);
 
-        ArrayList<Curso> pp = new ArrayList<Curso>();
-        ArrayList<Carrera> cc = new ArrayList<Carrera>();
-        u = new User("Allan", 2, pp, cc, "@allan", "");
-        users.add(u);
-
-        pp = new ArrayList<Curso>();
-        cc = new ArrayList<Carrera>();
-        u = new User("Luis", 2, pp, cc, "@luis", "");
-        users.add(u);
-    }
+       }
 
     public String run(String apiUrl) throws Exception{
         String current = "";
@@ -175,5 +143,33 @@ public class Model {
         } catch (JSONException e) {
             throw e;
         }
+    }
+
+    public ArrayList<Estudiante> getEstudiantes(ServicioEstudiante servicio) {
+        String message = "";
+        String result = "";
+        Estudiante est = new Estudiante();
+        ArrayList<Estudiante> estudiantes = new ArrayList<>();
+        try {
+            Cursor cursor = servicio.list();
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    do {
+                        est.setId(cursor.getInt(cursor.getColumnIndex(ServicioEstudiante.estudianteEntry.ID)));
+                        est.setNombre(cursor.getString(cursor.getColumnIndex(ServicioEstudiante.estudianteEntry.NOMBRE)));
+                        est.setApellido1(cursor.getString(cursor.getColumnIndex(ServicioEstudiante.estudianteEntry.APELLIDO1)));
+                        est.setApellido2(cursor.getString(cursor.getColumnIndex(ServicioEstudiante.estudianteEntry.APELLIDO2)));
+                        est.setEdad(cursor.getInt(cursor.getColumnIndex(ServicioEstudiante.estudianteEntry.EDAD)));
+                        est.setUser(cursor.getString(cursor.getColumnIndex(ServicioEstudiante.estudianteEntry.USER)));
+                        est.setPassword(cursor.getString(cursor.getColumnIndex(ServicioEstudiante.estudianteEntry.PASSWORD)));
+                        estudiantes.add(est);
+                    } while (cursor.moveToNext());
+                }
+                cursor.close();
+            }
+        } catch (Exception ex) {
+            message = ex.getMessage();
+        }
+        return estudiantes;
     }
 }

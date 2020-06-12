@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import com.miker.login.carrera.CarrerasActivity;
 import com.miker.login.curso.CursosActivity;
 import com.miker.login.curso_x_estudiante.MatriculaActivity;
+import com.miker.login.estudiante.EstudiantesActivity;
 
 public class NavDrawerActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -95,7 +96,6 @@ public class NavDrawerActivity extends AppCompatActivity
         Gson gson = new Gson();
         String json = mPrefs.getString(getString(R.string.preference_user_key), "");
         Model model = gson.fromJson(json, Model.class);
-        int privilegio = model.getLoggedUser().getPrivilege();
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
@@ -109,6 +109,9 @@ public class NavDrawerActivity extends AppCompatActivity
         } else if (id == R.id.nav_carreras) {
             Intent intent = new Intent(NavDrawerActivity.this, CarrerasActivity.class);
             NavDrawerActivity.this.startActivity(intent);
+        }    else if (id == R.id.nav_estudiantes) {
+            Intent intent = new Intent(NavDrawerActivity.this, EstudiantesActivity.class);
+             NavDrawerActivity.this.startActivity(intent);
         }  else if (id == R.id.nav_logout) {
             finish();
             Intent intent = new Intent(NavDrawerActivity.this, LoginActivity.class);

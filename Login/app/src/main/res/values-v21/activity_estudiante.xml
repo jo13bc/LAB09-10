@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="cedula">Cédula:</string>
+    <string name="apell1">Primer Apellido:</string>
+    <string name="apell2">Segundo Apellido:</string>
+    <string name="edad">Edad:</string>
+    <string name="user">Usuario:</string>
+    <string name="pass">Contraseña:</string>
+</resources>

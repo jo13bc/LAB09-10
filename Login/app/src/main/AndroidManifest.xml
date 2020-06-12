@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.miker.login">
+
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
@@ -15,7 +16,14 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
+        <activity
+            android:name=".estudiante.EstudianteActivity"
+            android:label="@string/title_activity_estudiante"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".estudiante.EstudiantesActivity"
+            android:label="@string/title_activity_estudiantes"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".LoginActivity"
             android:label="@string/title_activity_login">
@@ -50,6 +58,5 @@
             android:label="@string/backdrop_title"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
-
 
 </manifest>

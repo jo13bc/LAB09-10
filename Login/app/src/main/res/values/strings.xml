@@ -1,7 +1,7 @@
 <resources>
 
     <!-- String related to shared preferences -->
-    <string name="preference_user_key">com.miker.componentes.USER</string>
+    <string name="preference_user_key">com.miker.componentes.estudiante</string>
     <string name="preference_user_key_default">none</string>
 
     <string name="app_name">SIMA</string>
@@ -48,6 +48,8 @@
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
+    <string name="password">Contraseña</string>
+    <string name="user">Usuario</string>
     <string name="prompt_password">Password (optional)</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
@@ -77,8 +79,19 @@
     <string name="item_matricula">Matricula</string>
     <string name="item_cursos">Cursos</string>
     <string name="item_carreras">Carreras</string>
+    <string name="item_estudiantes">Estudiantes</string>
     <string name="item_serch">Buscar</string>
     <string name="btn_cancel">Cancelar</string>
     <string name="btn_accept">Aceptar</string>
+    <string name="title_activity_estudiantes">EstudiantesActivity</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="title_activity_estudiante">EstudianteActivity</string>
 
 </resources>
