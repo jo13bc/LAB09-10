@@ -8,6 +8,8 @@ import android.provider.BaseColumns;
 
 import com.miker.login.curso.Curso;
 
+import java.util.ArrayList;
+
 import static com.miker.login.Utils.cursoToContentValues;
 
 public class ServicioCurso extends SQLiteOpenHelper {
@@ -108,4 +110,5 @@ public class ServicioCurso extends SQLiteOpenHelper {
                 new String[]{String.valueOf(curso.getId())}
         );
     }
+
 }
