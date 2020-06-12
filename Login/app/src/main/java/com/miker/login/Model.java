@@ -1,13 +1,11 @@
 package com.miker.login;
 
 import android.database.Cursor;
-import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.gson.Gson;
 import com.miker.login.carrera.Carrera;
-import com.miker.login.curso.Ciclo;
 import com.miker.login.curso.Curso;
 import com.miker.login.estudiante.Estudiante;
 
@@ -21,7 +19,6 @@ import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
-import java.sql.Date;
 
 /**
  * Created by HsingPC on 20/4/2018.
@@ -186,8 +183,8 @@ public class Model extends AppCompatActivity implements  Serializable {
                     do {
                         est.setId(cursor.getInt(cursor.getColumnIndex(ServicioEstudiante.estudianteEntry.ID)));
                         est.setNombre(cursor.getString(cursor.getColumnIndex(ServicioEstudiante.estudianteEntry.NOMBRE)));
-                        est.setApellido1(cursor.getString(cursor.getColumnIndex(ServicioEstudiante.estudianteEntry.APELLIDO1)));
-                        est.setApellido2(cursor.getString(cursor.getColumnIndex(ServicioEstudiante.estudianteEntry.APELLIDO2)));
+                        est.setApell1(cursor.getString(cursor.getColumnIndex(ServicioEstudiante.estudianteEntry.APELLIDO1)));
+                        est.setApell2(cursor.getString(cursor.getColumnIndex(ServicioEstudiante.estudianteEntry.APELLIDO2)));
                         est.setEdad(cursor.getInt(cursor.getColumnIndex(ServicioEstudiante.estudianteEntry.EDAD)));
                         est.setUser(cursor.getString(cursor.getColumnIndex(ServicioEstudiante.estudianteEntry.USER)));
                         est.setPassword(cursor.getString(cursor.getColumnIndex(ServicioEstudiante.estudianteEntry.PASSWORD)));

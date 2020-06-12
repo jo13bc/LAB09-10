@@ -3,20 +3,15 @@ package com.miker.login;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.miker.login.curso.Curso;
 import com.miker.login.estudiante.Estudiante;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class LoginActivity extends AppCompatActivity {

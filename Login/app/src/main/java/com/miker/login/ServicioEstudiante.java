@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.provider.BaseColumns;
 
 import com.miker.login.estudiante.Estudiante;
+
 import static com.miker.login.Utils.estudianteToContentValues;
 
 public class ServicioEstudiante extends SQLiteOpenHelper {
@@ -48,8 +49,8 @@ public class ServicioEstudiante extends SQLiteOpenHelper {
     }
 
     private void registroData(SQLiteDatabase sqLiteDatabase) {
-        mockEstudiante(sqLiteDatabase, new Estudiante(116850387, "Monserrath","Molina","Sanchez",22,"monse","monse"));
-        mockEstudiante(sqLiteDatabase, new Estudiante(616830388, "José","Beita","Cascante",21,"jose","jose"));
+        mockEstudiante(sqLiteDatabase, new Estudiante(1, "Monserrath","Molina","Sanchez",22,"monse","monse"));
+        mockEstudiante(sqLiteDatabase, new Estudiante(2, "José","Beita","Cascante",21,"jose","jose"));
     }
 
        public long mockEstudiante(SQLiteDatabase db, Estudiante estudiante) {

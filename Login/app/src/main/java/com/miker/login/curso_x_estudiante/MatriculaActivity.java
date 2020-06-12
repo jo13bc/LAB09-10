@@ -1,15 +1,12 @@
 package com.miker.login.curso_x_estudiante;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.miker.login.NavDrawerActivity;
@@ -17,8 +14,6 @@ import com.miker.login.R;
 import com.miker.login.ServicioCurso_X_Estudiante;
 import com.miker.login.curso.Curso;
 import com.miker.login.estudiante.Estudiante;
-
-import java.util.ArrayList;
 
 public class MatriculaActivity extends AppCompatActivity {
 

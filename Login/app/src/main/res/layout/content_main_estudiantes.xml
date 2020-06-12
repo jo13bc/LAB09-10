@@ -6,8 +6,8 @@
     android:layout_height="match_parent"
     android:background="@color/viewBg"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:showIn="@layout/activity_estudiantes"
-    tools:context="com.miker.login.estudiante.EstudiantesActivity">
+    tools:showIn="@layout/activity_carreras"
+    tools:context="com.miker.login.carrera.CarrerasActivity">
 
     <view class="androidx.recyclerview.widget.RecyclerView"
         android:id="@+id/recycler_view"

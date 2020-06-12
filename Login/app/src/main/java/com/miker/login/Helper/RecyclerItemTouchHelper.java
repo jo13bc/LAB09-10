@@ -59,12 +59,12 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
     public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
         if (viewHolder != null) {
             //check adapter
-            if (this.listener.getClass().getSimpleName().equals("CursosActivity")) {
+            if (this.listener.getClass().getSimpleName().equals("EstudiantesActivity")) {
                 backgroundViewEdit = ((CursosAdapter.MyViewHolder) viewHolder).viewBackgroundEdit;
                 backgroundViewDelete = ((CursosAdapter.MyViewHolder) viewHolder).viewBackgroundDelete;
                 foregroundView = ((CursosAdapter.MyViewHolder) viewHolder).viewForeground;
             }
-             else if (this.listener.getClass().getSimpleName().equals("CarrerasActivity")) {
+             else if (this.listener.getClass().getSimpleName().equals("CursosActivity")) {
                 backgroundViewEdit = ((CarrerasAdapter.MyViewHolder) viewHolder).viewBackgroundEdit;
                backgroundViewDelete = ((CarrerasAdapter.MyViewHolder) viewHolder).viewBackgroundDelete;
                 foregroundView = ((CarrerasAdapter.MyViewHolder) viewHolder).viewForeground;

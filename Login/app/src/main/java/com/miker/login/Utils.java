@@ -26,8 +26,8 @@ public class Utils {
         ContentValues values = new ContentValues();
         values.put(ServicioEstudiante.estudianteEntry.ID, estudiante.getId());
         values.put(ServicioEstudiante.estudianteEntry.NOMBRE, estudiante.getNombre());
-        values.put(ServicioEstudiante.estudianteEntry.APELLIDO1, estudiante.getApellido1());
-        values.put(ServicioEstudiante.estudianteEntry.APELLIDO2, estudiante.getApellido2());
+        values.put(ServicioEstudiante.estudianteEntry.APELLIDO1, estudiante.getApell1());
+        values.put(ServicioEstudiante.estudianteEntry.APELLIDO2, estudiante.getApell2());
         values.put(ServicioEstudiante.estudianteEntry.EDAD, estudiante.getEdad());
         values.put(ServicioEstudiante.estudianteEntry.USER, estudiante.getUser());
         values.put(ServicioEstudiante.estudianteEntry.PASSWORD, estudiante.getPassword());
