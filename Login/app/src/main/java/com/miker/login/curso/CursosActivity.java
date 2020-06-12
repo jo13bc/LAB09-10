@@ -67,6 +67,7 @@ public class CursosActivity extends AppCompatActivity implements RecyclerItemTou
         recyclerView = findViewById(R.id.recycler_view);
         cursoList = new ArrayList<>();
         model = new Model();
+        cursoList = getCursos();
         coordinatorLayout = findViewById(R.id.main_content);
 
         // go to update or add career
@@ -358,5 +359,31 @@ public class CursosActivity extends AppCompatActivity implements RecyclerItemTou
     private void insert_curso() {
         Intent intent = new Intent(this, CursoActivity.class);
         startActivity(intent);
+    }
+
+    protected ArrayList<Curso> getCursos() {
+        String message = "";
+        String result = "";
+        ArrayList<Curso> cursos = new ArrayList<>();
+        try {
+            Cursor cursor = servicio.list();
+            if (cursor != null) {
+                if (cursor.moveToFirst()) {
+                    cursos = new ArrayList<>();
+                    do {
+                        Curso curso = new Curso();
+                        curso.setId(cursor.getInt(cursor.getColumnIndex(ServicioCurso.cursoEntry.ID)));
+                        curso.setDescripcion(cursor.getString(cursor.getColumnIndex(ServicioCurso.cursoEntry.DESCRIPCION)));
+                        curso.setCreditos(cursor.getInt(cursor.getColumnIndex(ServicioCurso.cursoEntry.CREDITOS)));
+                        //
+                        cursos.add(curso);
+                    } while (cursor.moveToNext());
+                }
+                cursor.close();
+            }
+        } catch (Exception ex) {
+            message = ex.getMessage();
+        }
+        return cursos;
     }
 }
