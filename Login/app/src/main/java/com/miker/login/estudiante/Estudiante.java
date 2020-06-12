@@ -1,50 +1,46 @@
 package com.miker.login.estudiante;
 
 import com.miker.login.curso.Curso;
+import com.miker.login.curso.Instancia;
 
-import java.io.Serializable;
-import java.util.List;
+import org.json.JSONObject;
 
-public class Estudiante implements Serializable {
+import java.util.ArrayList;
+
+public class Estudiante extends Instancia {
+
     private int id;
     private String nombre;
-    private String apellido2;
-    private String apellido1;
+    private String apell1;
+    private String apell2;
     private int edad;
     private String user;
     private String password;
-    private List<Curso> cursos;
+    private ArrayList<Curso> cursos;
 
-
-    public Estudiante(int id,  String nombre, String apellido2, String apellido1, int edad, String user, String password, List<Curso> cursos) {
+    public Estudiante(int id, String nombre, String apell1, String apell2, int edad, String user, String password, ArrayList<Curso> cursos) {
         this.id = id;
         this.nombre = nombre;
-        this.apellido2 = apellido2;
-        this.apellido1 = apellido1;
+        this.apell1 = apell1;
+        this.apell2 = apell2;
         this.edad = edad;
         this.user = user;
         this.password = password;
         this.cursos = cursos;
     }
 
-    public Estudiante(int id,  String nombre, String apellido2, String apellido1, int edad, String user, String password) {
+    public Estudiante(int id, String nombre, String apell1, String apell2, int edad, String user, String password) {
         this.id = id;
         this.nombre = nombre;
-        this.apellido2 = apellido2;
-        this.apellido1 = apellido1;
+        this.apell1 = apell1;
+        this.apell2 = apell2;
         this.edad = edad;
         this.user = user;
         this.password = password;
     }
+
     public Estudiante() {
-        this.id = 0;
-        this.nombre = null;
-        this.apellido2 = null;
-        this.apellido1 = null;
-        this.edad = 0;
-        this.user = null;
-        this.password = null;
-        this.cursos = null;
+        this(0,  null, null,null,0,null,null);
     }
 
     public Estudiante(int id) {
@@ -59,6 +55,7 @@ public class Estudiante implements Serializable {
         this.id = id;
     }
 
+
     public String getNombre() {
         return nombre;
     }
@@ -67,20 +64,20 @@ public class Estudiante implements Serializable {
         this.nombre = nombre;
     }
 
-    public String getApellido2() {
-        return apellido2;
+    public String getApell1() {
+        return apell1;
     }
 
-    public void setApellido2(String apellido2) {
-        this.apellido2 = apellido2;
+    public void setApell1(String apell1) {
+        this.apell1 = apell1;
     }
 
-    public String getApellido1() {
-        return apellido1;
+    public String getApell2() {
+        return apell2;
     }
 
-    public void setApellido1(String apellido1) {
-        this.apellido1 = apellido1;
+    public void setApell2(String apell2) {
+        this.apell2 = apell2;
     }
 
     public int getEdad() {
@@ -95,6 +92,14 @@ public class Estudiante implements Serializable {
         return user;
     }
 
+    public ArrayList<Curso> getCursos() {
+        return cursos;
+    }
+
+    public void setCursos(ArrayList<Curso> cursos) {
+        this.cursos = cursos;
+    }
+
     public void setUser(String user) {
         this.user = user;
     }
@@ -107,18 +112,12 @@ public class Estudiante implements Serializable {
         this.password = password;
     }
 
-    public List<Curso> getCursos() {
-        return cursos;
-    }
-
-    public void setCursos(List<Curso> cursos) {
-        this.cursos = cursos;
-    }
 
     @Override
-    public String toString() {
-        return "Estudiante{" +
-                "id=" + id +
-                '}';
+    public JSONObject getJSON() throws Exception {
+        JSONObject json = new JSONObject();
+        json.put("id", id);
+        json.put("nombre", nombre);
+        return json;
     }
 }
