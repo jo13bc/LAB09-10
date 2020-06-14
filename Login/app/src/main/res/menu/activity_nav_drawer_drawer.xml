@@ -3,31 +3,33 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_matricula"
-            android:icon="@android:drawable/ic_menu_today"
-            android:title="@string/item_matricula" />
-        <item
-            android:id="@+id/nav_historial"
-            android:icon="@android:drawable/ic_menu_month"
-            android:title="@string/item_historial" />
-        <item
-            android:id="@+id/nav_cursos"
-            android:icon="@android:drawable/ic_menu_sort_by_size"
-            android:title="@string/item_cursos" />
-        <item
-            android:id="@+id/nav_estudiantes"
-            android:icon="@android:drawable/ic_menu_sort_by_size"
-            android:title="@string/item_estudiantes" />
-    </group>
+    <item android:title="Menú">
+        <menu>
+            <item
+                android:id="@+id/nav_matricula"
+                android:icon="@android:drawable/ic_menu_today"
+                android:title="@string/item_matricula" />
+            <item
+                android:id="@+id/nav_historial"
+                android:icon="@android:drawable/ic_menu_month"
+                android:title="@string/item_historial" />
+            <item
+                android:id="@+id/nav_cursos"
+                android:icon="@android:drawable/ic_menu_sort_by_size"
+                android:title="@string/item_cursos" />
+            <item
+                android:id="@+id/nav_estudiantes"
+                android:icon="@android:drawable/ic_menu_sort_by_size"
+                android:title="@string/item_estudiantes" />
+        </menu>
+    </item>
 
-    <item android:title="User options">
+    <item android:title="Opciones de Usuario">
         <menu>
             <item
                 android:id="@+id/nav_logout"
                 android:icon="@drawable/ic_logout"
-                android:title="Logout" />
+                android:title="Cerrar sección" />
         </menu>
     </item>
 

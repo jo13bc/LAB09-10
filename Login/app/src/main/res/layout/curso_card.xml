@@ -20,7 +20,7 @@
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/padd_10"
-            android:src="@android:drawable/ic_menu_edit"/>
+            android:src="@android:drawable/ic_menu_edit" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -47,7 +47,7 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/padd_10"
-            android:src="@android:drawable/ic_menu_delete"/>
+            android:src="@android:drawable/ic_menu_delete" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -59,31 +59,38 @@
             android:textColor="#fff"
             android:textSize="13dp" />
     </RelativeLayout>
+
     <RelativeLayout
         android:id="@+id/view_foreground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:padding="@dimen/padd_10">
+        android:padding="@dimen/padd_10"
+        android:background="@android:color/background_light">
 
 
         <TextView
             android:id="@+id/nombre"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
-            android:textSize="@dimen/album_title" />
-
-        <TextView
-            android:id="@+id/creditos"
-            android:layout_below="@id/nombre"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
             android:paddingLeft="@dimen/product_title_padding"
             android:paddingTop="@dimen/product_title_padding"
             android:paddingRight="@dimen/product_title_padding"
+            android:text="nombre"
             android:textColor="@color/colorAccent"
-            android:textSize="@dimen/curso_card_text" />
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/creditos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/nombre"
+            android:paddingLeft="@dimen/product_title_padding"
+            android:paddingTop="@dimen/product_title_padding"
+            android:paddingRight="@dimen/product_title_padding"
+            android:text="creditos"
+            android:textColor="@color/colorAccent"
+            android:textSize="14sp" />
 
     </RelativeLayout>
 

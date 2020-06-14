@@ -132,12 +132,11 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
     private void drawBackground(float dX) {
         if (this.listener.getClass().getSimpleName().equals("MatriculaActivity")) {
             backgroundViewDelete.setVisibility(View.VISIBLE);
-        } else if (this.listener.getClass().getSimpleName().equals("OfertaActivity")) {
-            backgroundViewEdit.setVisibility(View.VISIBLE);
         } else if (dX > 0) {
             backgroundViewEdit.setVisibility(View.VISIBLE);
             backgroundViewDelete.setVisibility(View.GONE);
         } else {
+            backgroundViewDelete.setVisibility(View.VISIBLE);
             backgroundViewEdit.setVisibility(View.GONE);
         }
     }

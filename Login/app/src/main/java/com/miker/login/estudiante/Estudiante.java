@@ -11,7 +11,6 @@ import java.util.ArrayList;
 public class Estudiante extends Usuario {
 
     private int id;
-    private String nombre;
     private String apell1;
     private String apell2;
     private int edad;
@@ -52,15 +51,6 @@ public class Estudiante extends Usuario {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
     }
 
     public String getApell1() {

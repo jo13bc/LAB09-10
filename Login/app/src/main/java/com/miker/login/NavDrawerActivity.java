@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,15 +39,6 @@ public class NavDrawerActivity extends AppCompatActivity implements NavigationVi
 
         mPrefs = this.getSharedPreferences(getString(R.string.preference_user_key), Context.MODE_PRIVATE);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -63,10 +55,14 @@ public class NavDrawerActivity extends AppCompatActivity implements NavigationVi
 
         if (usuario.isSuperUser()) {
             menu.findItem(R.id.nav_matricula).setVisible(false);
+            menu.findItem(R.id.nav_historial).setVisible(false);
         } else {
             menu.findItem(R.id.nav_cursos).setVisible(false);
             menu.findItem(R.id.nav_estudiantes).setVisible(false);
         }
+
+        TextView nombre = layout.findViewById(R.id.texto);
+        nombre.setText("Bienvenido " + usuario.getNombre());
     }
 
     @Override
@@ -94,8 +90,10 @@ public class NavDrawerActivity extends AppCompatActivity implements NavigationVi
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.nav_logout) {
+            finish();
+            Intent intent = new Intent(NavDrawerActivity.this, LoginActivity.class);
+            startActivityForResult(intent, 0);
         }
 
         return super.onOptionsItemSelected(item);

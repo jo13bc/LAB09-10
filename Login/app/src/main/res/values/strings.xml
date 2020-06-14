@@ -37,7 +37,7 @@
         <item>2023</item>
         <item>2024</item>
     </string-array>
-    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_login">Login</string>
 
     <!-- Strings related to products cardview-->
     <string name="action_add_favourite">Add to Favourites</string>
@@ -60,7 +60,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="title_activity_nav_drawer">Catalogue</string>
+    <string name="title_activity_nav_drawer">Principal</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="nav_header_title">SIMA UNA</string>
@@ -76,7 +76,7 @@
     <string name="total">Total</string>
 
     <!-- Strings related to menu -->
-    <string name="item_matricula">Matricula</string>
+    <string name="item_matricula">Matrícula</string>
     <string name="item_historial">Historial</string>
     <string name="item_cursos">Cursos</string>
     <string name="item_oferta">Oferta Académica</string>
