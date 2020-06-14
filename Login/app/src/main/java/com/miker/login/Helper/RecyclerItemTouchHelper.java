@@ -11,7 +11,6 @@ import android.view.View;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.miker.login.carrera.CarrerasAdapter;
 import com.miker.login.curso.CursosAdapter;
 import com.miker.login.estudiante.EstudiantesAdapter;
 import com.miker.login.oferta.curso.OfertaAdapter;

@@ -23,7 +23,8 @@
             android:paddingRight="@dimen/product_title_padding"
             android:text="nombre"
             android:textColor="@color/colorAccent"
-            android:textSize="@dimen/album_title" />
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/creditos"
@@ -36,7 +37,7 @@
             android:paddingRight="@dimen/product_title_padding"
             android:text="creditos"
             android:textColor="@color/colorAccent"
-            android:textSize="@dimen/curso_card_text" />
+            android:textSize="14sp" />
 
     </RelativeLayout>
 

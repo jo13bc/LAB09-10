@@ -57,11 +57,16 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/fab_margin"
+        android:layout_marginStart="@dimen/fab_margin"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:layout_marginTop="@dimen/fab_margin"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:layout_marginBottom="@dimen/fab_margin"
         android:clickable="true"
         app:backgroundTint="@color/bg_row_background_delete"
         app:backgroundTintMode="multiply"
-        app:srcCompat="@android:drawable/ic_menu_add"
+        app:srcCompat="@android:drawable/ic_menu_send"
         tools:ignore="VectorDrawableCompat" />
 
 </RelativeLayout>

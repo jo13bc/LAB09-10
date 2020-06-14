@@ -19,7 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.miker.login.curso.CursosActivity;
-import com.miker.login.curso_x_estudiante.MatriculaActivity;
+import com.miker.login.historico.HistoricoActivity;
 import com.miker.login.estudiante.EstudiantesActivity;
 import com.miker.login.oferta.curso.OfertaActivity;
 
@@ -126,7 +126,7 @@ public class NavDrawerActivity extends AppCompatActivity implements NavigationVi
                     intent = new Intent(NavDrawerActivity.this, OfertaActivity.class);
                     // Handle the camera action
                 } else if (id == R.id.nav_historial) {
-                    intent = new Intent(NavDrawerActivity.this, MatriculaActivity.class);
+                    intent = new Intent(NavDrawerActivity.this, HistoricoActivity.class);
                 }
             }
             intent.putExtra("usuario", usuario);

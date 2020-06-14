@@ -15,8 +15,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="left|center_vertical"
+        android:text="descripcion"
         android:textColor="@color/colorAccent"
-        android:textSize="24sp"
+        android:textSize="18sp"
         android:textStyle="bold" />
 
     <TextView
@@ -24,6 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="left|center_vertical"
+        android:text="creditos"
         android:textColor="@color/colorAccent"
         android:textSize="14sp" />
 

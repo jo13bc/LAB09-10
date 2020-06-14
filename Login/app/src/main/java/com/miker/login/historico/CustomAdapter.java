@@ -1,18 +1,14 @@
-package com.miker.login.curso_x_estudiante;
+package com.miker.login.historico;
 
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.miker.login.R;
 import com.miker.login.curso.Curso;
-import com.miker.login.estudiante.Estudiante;
-import com.miker.login.oferta.curso.Oferta;
-import com.miker.login.oferta.curso.OfertaAdapter;
 
 import java.util.List;
 

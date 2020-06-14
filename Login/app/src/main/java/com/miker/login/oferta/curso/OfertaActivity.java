@@ -24,23 +24,19 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
-import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.miker.login.Helper.RecyclerItemTouchHelper;
 import com.miker.login.NavDrawerActivity;
 import com.miker.login.R;
 import com.miker.login.ServicioCurso;
 import com.miker.login.ServicioMatricula;
 import com.miker.login.Usuario;
 import com.miker.login.curso.Curso;
-import com.miker.login.curso_x_estudiante.CustomAdapter;
-import com.miker.login.curso_x_estudiante.MatriculaActivity;
+import com.miker.login.historico.CustomAdapter;
 import com.miker.login.estudiante.Estudiante;
 
 import java.util.ArrayList;
@@ -96,27 +92,45 @@ public class OfertaActivity extends AppCompatActivity implements OfertaAdapter.O
 
     private void confirmation() {
         Dialog dialog = new Dialog(this);
+        loadDialog(dialog);
+        dialog.setTitle("Confirmación de Acción");
+        dialog.show();
+    }
+
+    private void loadDialog(Dialog dialog){
+        //
         dialog.setContentView(R.layout.activity_matricula);
         ListView lv = (ListView) dialog.findViewById(R.id.list);
         Button btn_accept = (Button) dialog.findViewById(R.id.btn_accept);
         Button btn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
         lv.setAdapter(new CustomAdapter(getApplicationContext(), this.cursoListSelected, null));
+        //
         btn_accept.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
                 insert();
+                dialog.dismiss();
+                list list = new list();
+                list.execute();
             }
         });
-        btn_accept.setOnClickListener(new View.OnClickListener() {
+        btn_cancel.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
             }
         });
-        dialog.setTitle("Confirmación de Acción");
-        dialog.show();
+        //
+        if (cursoListSelected.isEmpty()) {
+            Toast.makeText(
+                    getApplicationContext(),
+                    "No se permite una matricula sin cursos.",
+                    Toast.LENGTH_LONG
+            ).show();
+            btn_accept.setEnabled(false);
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -291,7 +305,7 @@ public class OfertaActivity extends AppCompatActivity implements OfertaAdapter.O
     private void insert() {
         try {
             for (Curso curso : cursoListSelected) {
-                ServicioMatricula.getServicio(getApplicationContext()).insert((Estudiante)usuario, curso);
+                ServicioMatricula.getServicio(getApplicationContext()).insert((Estudiante) usuario, curso);
             }
         } catch (Exception ex) {
             Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();

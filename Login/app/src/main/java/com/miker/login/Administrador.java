@@ -1,6 +1,5 @@
 package com.miker.login;
 
-import com.miker.login.carrera.Carrera;
 import com.miker.login.curso.Curso;
 
 import java.io.Serializable;

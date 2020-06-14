@@ -1,7 +1,5 @@
 package com.miker.login.curso;
 
-import com.miker.login.carrera.Carrera;
-
 import org.json.JSONObject;
 
 /**

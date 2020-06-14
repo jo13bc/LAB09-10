@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.miker.login.R;
-import com.miker.login.carrera.Carrera;
 
 public class CursoActivity extends AppCompatActivity {
 

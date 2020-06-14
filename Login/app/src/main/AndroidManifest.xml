@@ -42,7 +42,7 @@
             android:label="@string/backdrop_title2"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".curso_x_estudiante.MatriculaActivity"
+            android:name=".historico.HistoricoActivity"
             android:label="@string/backdrop_title"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
