@@ -46,7 +46,7 @@
         android:layout_below="@id/textView7" />
 
     <include
-        layout="@layout/content_main"
+        layout="@layout/content_cursos"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/space2"

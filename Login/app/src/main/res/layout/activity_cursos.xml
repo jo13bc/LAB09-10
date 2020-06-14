@@ -41,7 +41,7 @@
     </FrameLayout>
 
     <include
-        layout="@layout/content_main"
+        layout="@layout/content_cursos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="110dp"
