@@ -1,23 +1,20 @@
-package com.miker.login;
+package com.miker.login.DAO;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
 import android.provider.BaseColumns;
-import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
-import com.miker.login.curso.Curso;
+import com.miker.login.Logic.Curso;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
-import static com.miker.login.Utils.cursoToContentValues;
-import static com.miker.login.Utils.tableExists;
+import static com.miker.login.Logic.Utils.cursoToContentValues;
+import static com.miker.login.Logic.Utils.tableExists;
 
 public class ServicioCurso extends Servicio {
     public Context context;

@@ -1,4 +1,4 @@
-package com.miker.login.curso;
+package com.miker.login.Logic;
 
 import java.io.Serializable;
 import org.json.JSONObject;

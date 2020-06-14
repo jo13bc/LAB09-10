@@ -1,4 +1,4 @@
-package com.miker.login.historico;
+package com.miker.login.Controller;
 
 import android.content.DialogInterface;
 import android.os.Build;
@@ -12,10 +12,11 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.miker.login.R;
-import com.miker.login.ServicioMatricula;
-import com.miker.login.Usuario;
-import com.miker.login.curso.Curso;
-import com.miker.login.estudiante.Estudiante;
+import com.miker.login.DAO.ServicioMatricula;
+import com.miker.login.Logic.Usuario;
+import com.miker.login.Logic.Curso;
+import com.miker.login.Logic.Estudiante;
+import com.miker.login.Model.CustomAdapter;
 
 import java.util.List;
 

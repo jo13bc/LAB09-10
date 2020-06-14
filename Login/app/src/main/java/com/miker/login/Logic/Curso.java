@@ -1,6 +1,4 @@
-package com.miker.login.curso;
-
-import org.json.JSONObject;
+package com.miker.login.Logic;
 
 /**
  * Created by Luis Carrillo Rodriguez on 18/4/2018.

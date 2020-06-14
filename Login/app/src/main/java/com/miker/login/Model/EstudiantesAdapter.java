@@ -1,4 +1,4 @@
-package com.miker.login.estudiante;
+package com.miker.login.Model;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.miker.login.Logic.Estudiante;
 import com.miker.login.R;
 
 import java.util.ArrayList;

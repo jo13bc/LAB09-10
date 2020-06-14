@@ -1,4 +1,4 @@
-package com.miker.login;
+package com.miker.login.Controller;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,13 +9,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.RadioButton;
 import android.widget.Toast;
 
-import com.miker.login.estudiante.Estudiante;
+import com.miker.login.DAO.ServicioEstudiante;
+import com.miker.login.Logic.Administrador;
+import com.miker.login.Logic.Usuario;
+import com.miker.login.Logic.Estudiante;
+import com.miker.login.R;
 
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 public class LoginActivity extends AppCompatActivity {
 

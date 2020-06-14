@@ -1,23 +1,20 @@
-package com.miker.login;
+package com.miker.login.DAO;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Build;
 import android.provider.BaseColumns;
 
 import androidx.annotation.RequiresApi;
 
-import com.miker.login.curso.Curso;
-import com.miker.login.estudiante.Estudiante;
+import com.miker.login.Logic.Estudiante;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.miker.login.Utils.cursoToContentValues;
-import static com.miker.login.Utils.estudianteToContentValues;
-import static com.miker.login.Utils.tableExists;
+import static com.miker.login.Logic.Utils.estudianteToContentValues;
+import static com.miker.login.Logic.Utils.tableExists;
 
 public class ServicioEstudiante extends Servicio {
     public Context context;

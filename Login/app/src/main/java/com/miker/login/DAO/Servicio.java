@@ -1,4 +1,4 @@
-package com.miker.login;
+package com.miker.login.DAO;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -7,12 +7,6 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.util.Consumer;
-
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.function.Function;
 
 import static android.content.Context.MODE_PRIVATE;
 

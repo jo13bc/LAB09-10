@@ -1,4 +1,4 @@
-package com.miker.login.Helper;
+package com.miker.login.Model;
 
 import android.animation.ArgbEvaluator;
 import android.animation.ValueAnimator;
@@ -11,9 +11,8 @@ import android.view.View;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.miker.login.curso.CursosAdapter;
-import com.miker.login.estudiante.EstudiantesAdapter;
-import com.miker.login.oferta.curso.OfertaAdapter;
+import com.miker.login.Model.CursosAdapter;
+import com.miker.login.Model.EstudiantesAdapter;
 
 /**
  * Created by Luis Carrillo Rodriguez on 18/3/2018.

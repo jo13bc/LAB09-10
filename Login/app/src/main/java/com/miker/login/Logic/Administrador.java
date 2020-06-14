@@ -1,4 +1,4 @@
-package com.miker.login;
+package com.miker.login.Logic;
 
 public class Administrador extends Usuario {
 

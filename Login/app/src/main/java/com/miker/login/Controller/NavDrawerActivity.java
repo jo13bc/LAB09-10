@@ -1,4 +1,4 @@
-package com.miker.login;
+package com.miker.login.Controller;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -16,13 +15,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
-import com.miker.login.curso.CursosActivity;
-import com.miker.login.historico.HistoricoActivity;
-import com.miker.login.estudiante.EstudiantesActivity;
-import com.miker.login.oferta.curso.OfertaActivity;
+import com.miker.login.Logic.Administrador;
+import com.miker.login.Logic.Usuario;
+import com.miker.login.R;
 
 public class NavDrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 

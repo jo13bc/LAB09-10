@@ -1,7 +1,5 @@
-package com.miker.login.oferta.curso;
+package com.miker.login.Controller;
 
-import android.annotation.SuppressLint;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
@@ -13,60 +11,51 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
-
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.miker.login.NavDrawerActivity;
+import com.miker.login.Model.RecyclerItemTouchHelper;
+import com.miker.login.Logic.Estudiante;
 import com.miker.login.R;
-import com.miker.login.ServicioCurso;
-import com.miker.login.ServicioMatricula;
-import com.miker.login.Usuario;
-import com.miker.login.curso.Curso;
-import com.miker.login.historico.CustomAdapter;
-import com.miker.login.estudiante.Estudiante;
+import com.miker.login.DAO.ServicioEstudiante;
+import com.miker.login.Model.EstudiantesAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class OfertaActivity extends AppCompatActivity implements OfertaAdapter.OfertaAdapterListener {
+public class EstudiantesActivity extends AppCompatActivity implements RecyclerItemTouchHelper.RecyclerItemTouchHelperListener, EstudiantesAdapter.EstudianteAdapterListener {
 
     private RecyclerView recyclerView;
-    private OfertaAdapter adapter;
-    private List<Oferta> cursoList;
-    private RelativeLayout coordinatorLayout;
+    private EstudiantesAdapter adapter;
+    private List<Estudiante> cursoList;
+    private CoordinatorLayout coordinatorLayout;
     private SearchView searchView;
     private FloatingActionButton btn_insert;
     private ProgressDialog progressDialog;
     private String message;
-    private ServicioCurso servicio;
-    private ArrayList<Curso> cursoListSelected;
-    private Usuario usuario;
+    private ServicioEstudiante servicio;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_oferta);
+        setContentView(R.layout.activity_estudiantes);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         //toolbar fancy stuff
-        getSupportActionBar().setTitle(getString(R.string.item_oferta));
+        getSupportActionBar().setTitle(getString(R.string.item_estudiantes));
 
         recyclerView = findViewById(R.id.recycler_view);
         cursoList = new ArrayList<>();
@@ -77,59 +66,20 @@ public class OfertaActivity extends AppCompatActivity implements OfertaAdapter.O
         btn_insert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                confirmation();
+                insert_estudiante();
             }
         });
+
+        //delete swiping left and right
+        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT, this);
+        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
+
         // white background notification bar
         whiteNotificationBar(recyclerView);
         try {
-            servicio = ServicioCurso.getServicio(getApplicationContext());
+            servicio = ServicioEstudiante.getServicio(getApplicationContext());
         } catch (Exception ex) {
             Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
-        }
-        cursoListSelected = new ArrayList<>();
-    }
-
-    private void confirmation() {
-        Dialog dialog = new Dialog(this);
-        loadDialog(dialog);
-        dialog.setTitle("Confirmación de Acción");
-        dialog.show();
-    }
-
-    private void loadDialog(Dialog dialog){
-        //
-        dialog.setContentView(R.layout.activity_matricula);
-        ListView lv = (ListView) dialog.findViewById(R.id.list);
-        Button btn_accept = (Button) dialog.findViewById(R.id.btn_accept);
-        Button btn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
-        lv.setAdapter(new CustomAdapter(getApplicationContext(), this.cursoListSelected, null));
-        //
-        btn_accept.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onClick(View v) {
-                insert();
-                dialog.dismiss();
-                list list = new list();
-                list.execute();
-            }
-        });
-        btn_cancel.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        //
-        if (cursoListSelected.isEmpty()) {
-            Toast.makeText(
-                    getApplicationContext(),
-                    "No se permite una matricula sin cursos.",
-                    Toast.LENGTH_LONG
-            ).show();
-            btn_accept.setEnabled(false);
         }
     }
 
@@ -143,6 +93,38 @@ public class OfertaActivity extends AppCompatActivity implements OfertaAdapter.O
         } catch (Exception ex) {
             Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
+        try {
+            Estudiante aux = (Estudiante) adapter.getSwipedItem(viewHolder.getAdapterPosition());
+            if (direction == ItemTouchHelper.START) {
+                if (viewHolder instanceof EstudiantesAdapter.MyViewHolder) {
+                    // get the removed item name to display it in snack bar
+                    servicio.delete(aux);
+                    Toast.makeText(getApplicationContext(), aux.getNombre_Completo() + " eliminado correctamente", Toast.LENGTH_LONG).show();
+                    list list = new list();
+                    list.execute();
+                }
+            } else {
+                //If is editing a row object
+                //send data to Edit Activity
+                Intent intent = new Intent(this, EstudianteActivity.class);
+                intent.putExtra("object", aux);
+                intent.putExtra("usuario", getIntent().getExtras().getSerializable("usuario"));
+                adapter.notifyDataSetChanged(); //restart left swipe view
+                startActivity(intent);
+            }
+        } catch (Exception ex) {
+            Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onItemMove(int source, int target) {
+        adapter.onItemMove(source, target);
     }
 
     @Override
@@ -214,32 +196,36 @@ public class OfertaActivity extends AppCompatActivity implements OfertaAdapter.O
         }
     }
 
-    @SuppressLint("ResourceAsColor")
-    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public void onSelected(Oferta oferta, TextView nombre, TextView creditos, RelativeLayout viewForeground) {
-        if (!checkCurso(cursoListSelected, oferta.getCurso())) {
-            oferta.setSelected(true);
-            cursoListSelected.add(oferta.getCurso());
-        } else {
-            oferta.setSelected(false);
-            cursoListSelected.remove(oferta.getCurso());
-        }
-        if (oferta.isSelected()) {
-            nombre.setTextColor(Color.WHITE);
-            creditos.setTextColor(Color.WHITE);
-            viewForeground.setBackgroundColor(Color.GRAY);
-        } else {
-            nombre.setTextColor(Color.BLACK);
-            creditos.setTextColor(Color.BLACK);
-            viewForeground.setBackgroundColor(Color.WHITE);
-        }
-        Toast.makeText(getApplicationContext(), oferta.getCurso().getDescripcion() + ((oferta.isSelected()) ? " seleccionado." : " deseleccionado."), Toast.LENGTH_SHORT).show();
+    public void onSelected(Estudiante estudiante) { //TODO get the select item of recycleView
+        Toast.makeText(getApplicationContext(), estudiante.getNombre_Completo(), Toast.LENGTH_LONG).show();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void checkIntentInformation() {
-        usuario = (Usuario) getIntent().getExtras().getSerializable("usuario");
+        try {
+            Bundle extras = getIntent().getExtras();
+            if (extras != null) {
+                Estudiante aux;
+                aux = (Estudiante) getIntent().getSerializableExtra("insert");
+                if (aux == null) {
+                    aux = (Estudiante) getIntent().getSerializableExtra("update");
+                    if (aux != null) {
+                        //found an item that can be updated
+                        servicio.update(aux);
+                        //check if exist
+                        Toast.makeText(getApplicationContext(), aux.getNombre_Completo() + " actualizado correctamente", Toast.LENGTH_LONG);
+
+                    }
+                } else {
+                    //found a new Curso Object
+                    servicio.insert(aux);
+                    Toast.makeText(getApplicationContext(), aux.getNombre_Completo() + " agregado correctamente", Toast.LENGTH_LONG);
+                }
+            }
+        } catch (Exception ex) {
+            message = ex.getMessage();
+        }
         list list = new list();
         list.execute();
     }
@@ -250,7 +236,7 @@ public class OfertaActivity extends AppCompatActivity implements OfertaAdapter.O
         protected void onPreExecute() {
             super.onPreExecute();
             // display a progress dialog for good user experiance
-            progressDialog = new ProgressDialog(OfertaActivity.this);
+            progressDialog = new ProgressDialog(EstudiantesActivity.this);
             progressDialog.setMessage("¡Cargando la Lista!");
             progressDialog.setCancelable(false);
             progressDialog.show();
@@ -261,8 +247,7 @@ public class OfertaActivity extends AppCompatActivity implements OfertaAdapter.O
         protected String doInBackground(String... params) {
             String result = "";
             try {
-                List<Curso> list = ServicioMatricula.getServicio(getApplicationContext()).list((Estudiante) usuario);
-                cursoList = servicio.list().stream().map(x -> new Oferta(x, checkCurso(list, x))).collect(Collectors.toList());
+                cursoList = servicio.list();
             } catch (Exception ex) {
                 message = ex.getMessage();
             }
@@ -283,13 +268,8 @@ public class OfertaActivity extends AppCompatActivity implements OfertaAdapter.O
 
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public boolean checkCurso(List<Curso> list, Curso curso) {
-        return list.stream().filter(x -> curso.getId() == x.getId()).count() > 0;
-    }
-
     public void showCursos() {
-        adapter = new OfertaAdapter(cursoList, this);
+        adapter = new EstudiantesAdapter(cursoList, this);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -301,14 +281,9 @@ public class OfertaActivity extends AppCompatActivity implements OfertaAdapter.O
         adapter.notifyDataSetChanged();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private void insert() {
-        try {
-            for (Curso curso : cursoListSelected) {
-                ServicioMatricula.getServicio(getApplicationContext()).insert((Estudiante) usuario, curso);
-            }
-        } catch (Exception ex) {
-            Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
-        }
+    private void insert_estudiante() {
+        Intent intent = new Intent(this, EstudianteActivity.class);
+        intent.putExtra("usuario", getIntent().getExtras().getSerializable("usuario"));
+        startActivity(intent);
     }
 }

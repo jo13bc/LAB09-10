@@ -1,4 +1,4 @@
-package com.miker.login.historico;
+package com.miker.login.Model;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.miker.login.R;
-import com.miker.login.curso.Curso;
+import com.miker.login.Logic.Curso;
 
 import java.util.List;
 
@@ -42,7 +42,7 @@ public class CustomAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        view = inflter.inflate(R.layout.cardview_curso, null);
+        view = inflter.inflate(R.layout.card_curso, null);
         TextView descripcion = view.findViewById(R.id.descripcion);
         TextView creditos = view.findViewById(R.id.creditos);
         descripcion.setText(cursoList.get(i).getDescripcion());

@@ -17,7 +17,7 @@
         android:theme="@style/AppTheme.NoActionBar"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".LoginActivity"
+            android:name=".Controller.LoginActivity"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name">
             <intent-filter>
@@ -27,31 +27,31 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".NavDrawerActivity"
+            android:name=".Controller.NavDrawerActivity"
             android:label="@string/title_activity_nav_drawer"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".curso.CursosActivity"
+            android:name=".Controller.CursosActivity"
             android:label="@string/backdrop_title"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".curso.CursoActivity"
+            android:name=".Controller.CursoActivity"
             android:label="@string/backdrop_title"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".historico.HistoricoActivity"
+            android:name=".Controller.HistoricoActivity"
             android:label="@string/backdrop_title"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".estudiante.EstudiantesActivity"
+            android:name=".Controller.EstudiantesActivity"
             android:label="@string/backdrop_estudiantes"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".estudiante.EstudianteActivity"
+            android:name=".Controller.EstudianteActivity"
             android:label="@string/backdrop_estudiante"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".oferta.curso.OfertaActivity"
+            android:name=".Controller.OfertaActivity"
             android:label="@string/item_oferta"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>

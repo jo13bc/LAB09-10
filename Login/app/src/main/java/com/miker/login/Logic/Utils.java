@@ -1,11 +1,12 @@
-package com.miker.login;
+package com.miker.login.Logic;
 
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.miker.login.curso.Curso;
-import com.miker.login.estudiante.Estudiante;
+import com.miker.login.DAO.ServicioCurso;
+import com.miker.login.DAO.ServicioEstudiante;
+import com.miker.login.DAO.ServicioMatricula;
 
 public class Utils {
 

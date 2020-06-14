@@ -1,9 +1,7 @@
-package com.miker.login.oferta.curso;
+package com.miker.login.Logic;
 
-import com.miker.login.curso.Curso;
-import com.miker.login.curso.Instancia;
-
-import org.json.JSONObject;
+import com.miker.login.Logic.Curso;
+import com.miker.login.Logic.Instancia;
 
 /**
  * Created by Luis Carrillo Rodriguez on 18/4/2018.

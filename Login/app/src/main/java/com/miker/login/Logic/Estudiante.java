@@ -1,10 +1,4 @@
-package com.miker.login.estudiante;
-
-import com.miker.login.Usuario;
-import com.miker.login.curso.Curso;
-import com.miker.login.curso.Instancia;
-
-import org.json.JSONObject;
+package com.miker.login.Logic;
 
 import java.util.ArrayList;
 

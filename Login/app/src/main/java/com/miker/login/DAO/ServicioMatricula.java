@@ -1,4 +1,4 @@
-package com.miker.login;
+package com.miker.login.DAO;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -8,15 +8,15 @@ import android.provider.BaseColumns;
 
 import androidx.annotation.RequiresApi;
 
-import com.miker.login.curso.Curso;
-import com.miker.login.estudiante.Estudiante;
+import com.miker.login.Logic.Curso;
+import com.miker.login.Logic.Estudiante;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.miker.login.Utils.matriculaToContentValues;
-import static com.miker.login.Utils.tableExists;
+import static com.miker.login.Logic.Utils.matriculaToContentValues;
+import static com.miker.login.Logic.Utils.tableExists;
 
 public class ServicioMatricula extends Servicio {
     public Context context;

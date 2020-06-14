@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.miker.login.estudiante.EstudiantesActivity">
+    tools:context="com.miker.login.Controller.EstudiantesActivity">
     <item
         android:id="@+id/action_search_est"
         android:icon="@android:drawable/ic_menu_search"

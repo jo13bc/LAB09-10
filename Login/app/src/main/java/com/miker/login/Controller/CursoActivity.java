@@ -1,4 +1,4 @@
-package com.miker.login.curso;
+package com.miker.login.Controller;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.miker.login.Logic.Curso;
 import com.miker.login.R;
 
 public class CursoActivity extends AppCompatActivity {

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/background_light"
-    tools:context="com.miker.login.oferta.curso.OfertaActivity">
+    tools:context="com.miker.login.Controller.OfertaActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar"

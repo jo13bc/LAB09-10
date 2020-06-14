@@ -1,4 +1,4 @@
-package com.miker.login.curso;
+package com.miker.login.Controller;
 
 import android.app.ProgressDialog;
 import android.app.SearchManager;
@@ -26,10 +26,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.miker.login.Helper.RecyclerItemTouchHelper;
-import com.miker.login.NavDrawerActivity;
+import com.miker.login.Model.RecyclerItemTouchHelper;
+import com.miker.login.Logic.Curso;
 import com.miker.login.R;
-import com.miker.login.ServicioCurso;
+import com.miker.login.DAO.ServicioCurso;
+import com.miker.login.Model.CursosAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

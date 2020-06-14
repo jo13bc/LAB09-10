@@ -69,7 +69,7 @@
 
 
         <TextView
-            android:id="@+id/nombre"
+            android:id="@+id/descripcion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/product_title_padding"
@@ -84,7 +84,7 @@
             android:id="@+id/creditos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/nombre"
+            android:layout_below="@id/descripcion"
             android:paddingLeft="@dimen/product_title_padding"
             android:paddingTop="@dimen/product_title_padding"
             android:paddingRight="@dimen/product_title_padding"
