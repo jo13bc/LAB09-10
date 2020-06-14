@@ -4,111 +4,152 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.os.Build;
 import android.provider.BaseColumns;
+import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
 
 import com.miker.login.curso.Curso;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import static com.miker.login.Utils.cursoToContentValues;
+import static com.miker.login.Utils.tableExists;
 
-public class ServicioCurso extends SQLiteOpenHelper {
+public class ServicioCurso extends Servicio {
+    public Context context;
+    private static ServicioCurso servicio = new ServicioCurso();
+
+    private ServicioCurso() {
+        //Constructor privado
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static ServicioCurso getServicio(Context context) {
+        servicio.context = context;
+        servicio.createTable();
+        return servicio;
+    }
 
     public static abstract class cursoEntry implements BaseColumns {
         public static final String TABLE_NAME = "CURSO";
-        public static final String ID = "id";
         public static final String DESCRIPCION = "descripcion";
         public static final String CREDITOS = "creditos";
     }
 
-    public static final int DATABASE_VERSION = 1;
-    public static final String DATABASE_NAME = "SIMA.db";
-
-    public ServicioCurso(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void createTable() {
+        boolean[] exists = new boolean[1];
+        try {
+            connection(context, (SQLiteDatabase sqLiteDatabase) -> {
+                exists[0] = tableExists(sqLiteDatabase, cursoEntry.TABLE_NAME);
+                sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + cursoEntry.TABLE_NAME + " ("
+                        + cursoEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,"
+                        + cursoEntry.DESCRIPCION + " TEXT NOT NULL,"
+                        + cursoEntry.CREDITOS + " INTEGER NOT NULL,"
+                        + "UNIQUE (" + cursoEntry._ID + "))");
+            });
+            // Insertar datos ficticios para prueba inicial
+            if (!exists[0]) registroData();
+        } catch (Exception ex) {
+            throw new RuntimeException(ex.getMessage());
+        }
     }
 
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE IF NOT EXISTS " + cursoEntry.TABLE_NAME + " ("
-                + cursoEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + cursoEntry.ID + " INTEGER NOT NULL,"
-                + cursoEntry.DESCRIPCION + " TEXT NOT NULL,"
-                + cursoEntry.CREDITOS + " INTEGER NOT NULL,"
-                + "UNIQUE (" + cursoEntry.ID + "))");
-
-
-        // Insertar datos ficticios para prueba inicial
-        registroData(db);
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void registroData() {
+        insert(new Curso(1, "Programación I", 3));
+        insert(new Curso(2, "Programación II", 3));
     }
 
-    private void registroData(SQLiteDatabase sqLiteDatabase) {
-        mockCurso(sqLiteDatabase, new Curso(1, "Programación I", 3));
-        mockCurso(sqLiteDatabase, new Curso(2, "Programación II", 3));
-    }
-
-    public long mockCurso(SQLiteDatabase db, Curso curso) {
-        return db.insert(
-                cursoEntry.TABLE_NAME,
-                null,
-                cursoToContentValues(curso)
-        );
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        // No hay operaciones
-    }
-
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public long insert(Curso curso) {
-        SQLiteDatabase sqLiteDatabase = getWritableDatabase();
-
-        return sqLiteDatabase.insert(
-                cursoEntry.TABLE_NAME,
-                null,
-                cursoToContentValues(curso)
-        );
-
+        long[] result = new long[1];
+        connection(context, (SQLiteDatabase sqLiteDatabase) -> {
+            result[0] = sqLiteDatabase.insert(
+                    cursoEntry.TABLE_NAME,
+                    null,
+                    cursoToContentValues(curso)
+            );
+        });
+        return result[0];
     }
 
-    public Cursor list() {
-        return getReadableDatabase()
-                .query(
-                        cursoEntry.TABLE_NAME,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null,
-                        null);
-    }
-
-    public Cursor query(Curso curso) {
-        Cursor c = getReadableDatabase().query(
-                cursoEntry.TABLE_NAME,
-                null,
-                cursoEntry.ID + " LIKE ?",
-                new String[]{String.valueOf(curso.getId())},
-                null,
-                null,
-                null);
-        return c;
-    }
-
-    public int delete(Curso curso) {
-        return getWritableDatabase().delete(
-                cursoEntry.TABLE_NAME,
-                cursoEntry.ID + " LIKE ?",
-                new String[]{String.valueOf(curso.getId())});
-    }
-
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public int update(Curso curso) {
-        return getWritableDatabase().update(
-                cursoEntry.TABLE_NAME,
-                cursoToContentValues(curso),
-                cursoEntry.ID + " LIKE ?",
-                new String[]{String.valueOf(curso.getId())}
-        );
+        int[] result = new int[1];
+        connection(context, (SQLiteDatabase sqLiteDatabase) -> {
+            result[0] = sqLiteDatabase.update(
+                    cursoEntry.TABLE_NAME,
+                    cursoToContentValues(curso),
+                    cursoEntry._ID + " LIKE ?",
+                    new String[]{String.valueOf(curso.getId())}
+            );
+        });
+        return result[0];
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public int delete(Curso curso) {
+        int[] result = new int[1];
+        connection(context, (SQLiteDatabase sqLiteDatabase) -> {
+            result[0] = sqLiteDatabase.delete(
+                    cursoEntry.TABLE_NAME,
+                    cursoEntry._ID + " LIKE ?",
+                    new String[]{String.valueOf(curso.getId())}
+            );
+        });
+        return result[0];
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public List<Curso> list() {
+        List<Curso>[] result = new List[1];
+        connection(context, (SQLiteDatabase sqLiteDatabase) -> {
+            result[0] = list_to_cursor(
+                    sqLiteDatabase.query(
+                            cursoEntry.TABLE_NAME, null, null, null, null, null, null
+                    )
+            );
+        });
+        return result[0];
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public Curso query(Curso curso) {
+        Curso[] result = new Curso[1];
+        connection(context, (SQLiteDatabase sqLiteDatabase) -> {
+            result[0] = list_to_cursor(sqLiteDatabase.query(
+                    cursoEntry.TABLE_NAME,
+                    null,
+                    cursoEntry._ID + " LIKE ?",
+                    new String[]{String.valueOf(curso.getId())},
+                    null,
+                    null,
+                    null)).get(0);
+        });
+        return result[0];
+    }
+
+    public List<Curso> list_to_cursor(Cursor cursor) {
+        List<Curso> cursoList = new ArrayList<>();
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                do {
+                    Curso curso = new Curso();
+                    curso.setId(cursor.getInt(cursor.getColumnIndex(ServicioCurso.cursoEntry._ID)));
+                    curso.setDescripcion(cursor.getString(cursor.getColumnIndex(ServicioCurso.cursoEntry.DESCRIPCION)));
+                    curso.setCreditos(cursor.getInt(cursor.getColumnIndex(ServicioCurso.cursoEntry.CREDITOS)));
+                    //
+                    cursoList.add(curso);
+                } while (cursor.moveToNext());
+            }
+            cursor.close();
+        }
+        return cursoList;
     }
 
 }

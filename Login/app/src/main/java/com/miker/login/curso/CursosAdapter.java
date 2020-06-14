@@ -144,7 +144,10 @@ public class CursosAdapter extends RecyclerView.Adapter<CursosAdapter.MyViewHold
                     List<Curso> filteredList = new ArrayList<>();
                     for (Curso row : cursoList) {
                         // filter use two parameters
-                        if (row.getDescripcion().toLowerCase().contains(charString.toLowerCase())) {
+                        if (
+                                row.getDescripcion().toLowerCase().contains(charString.toLowerCase())
+                                || String.valueOf(row.getCreditos()).contains(charString.toLowerCase())
+                        ) {
                             filteredList.add(row);
                         }
                     }

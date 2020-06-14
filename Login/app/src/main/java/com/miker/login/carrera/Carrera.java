@@ -62,14 +62,4 @@ public class Carrera extends Instancia {
     public String toString() {
         return "Carrera:\n\tId: " + id + "\n\tCódigo: " + codigo + "\n\tNombre: " + nombre + "\n\tTitulo: " + titulo;
     }
-
-    @Override
-    public JSONObject getJSON() throws Exception {
-        JSONObject json = new JSONObject();
-        json.put("id", id);
-        json.put("codigo", codigo);
-        json.put("nombre", nombre);
-        json.put("titulo", titulo);
-        return json;
-    }
 }

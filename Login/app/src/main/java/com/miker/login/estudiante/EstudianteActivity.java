@@ -22,7 +22,7 @@ public class EstudianteActivity extends AppCompatActivity {
     private TextView apell2;
     private TextView user;
     private TextView pass;
-     private Estudiante estudiante = new Estudiante();
+    private Estudiante estudiante = new Estudiante();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +53,7 @@ public class EstudianteActivity extends AppCompatActivity {
         nombre.setText(estudiante.getNombre());
         apell1.setText(estudiante.getApell1());
         apell2.setText(estudiante.getApell2());
-        edad.setText(estudiante.getEdad());
+        edad.setText(String.valueOf(estudiante.getEdad()));
         user.setText(estudiante.getUser());
         pass.setText(estudiante.getPassword());
     }
@@ -65,29 +65,27 @@ public class EstudianteActivity extends AppCompatActivity {
 
     private void prepare_datas() {
         Bundle extras = getIntent().getExtras();
-        if (extras != null) {
+        String tipo;
+        if (extras.getSerializable("object") != null) {
             load_estudiantes((Estudiante) getIntent().getSerializableExtra("object"));
-            btn_insert_update.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    insert_update("update");
-                }
-            });
+            tipo = "update";
         } else {
             clean();
-            btn_insert_update.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    insert_update("insert");
-                }
-            });
+            tipo = "insert";
         }
+        btn_insert_update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                insert_update(tipo);
+            }
+        });
     }
 
     private void insert_update(String type) {
         if (validateForm()) {
             Intent intent = new Intent(getBaseContext(), EstudiantesActivity.class);
             intent.putExtra(type, estudiante);
+            intent.putExtra("usuario", getIntent().getExtras().getSerializable("usuario"));
             startActivity(intent);
             finish(); //prevent go back
         }
@@ -99,12 +97,45 @@ public class EstudianteActivity extends AppCompatActivity {
             nombre.setError("Nombre requerido");
             error++;
         }
-         if (error > 0) {
+        if (TextUtils.isEmpty(this.apell1.getText())) {
+            apell1.setError("Apellido 1 requerido");
+            error++;
+        }
+        if (TextUtils.isEmpty(this.apell2.getText())) {
+            apell2.setError("Apellido 2 requerido");
+            error++;
+        }
+        if (TextUtils.isEmpty(this.edad.getText())) {
+            edad.setError("Edad requerida");
+            error++;
+        }
+        try {
+            int edad = Integer.valueOf(this.edad.getText().toString());
+            if(edad < 0 || edad > 99){
+                throw new Exception();
+            }
+        } catch (Exception ex) {
+            edad.setError("La edad debe ser un número comprendido entre 0 y 99");
+            error++;
+        }
+        if (TextUtils.isEmpty(this.user.getText())) {
+            user.setError("Usuario requerido");
+            error++;
+        }
+        if (TextUtils.isEmpty(this.pass.getText())) {
+            pass.setError("Contraseña requerida");
+            error++;
+        }
+        if (error > 0) {
             Toast.makeText(getApplicationContext(), "Algunos errores", Toast.LENGTH_LONG).show();
             return false;
         } else {
-             estudiante.setNombre(nombre.getText().toString());
-             estudiante.setApell1(apell1.getText().toString());
+            estudiante.setNombre(nombre.getText().toString());
+            estudiante.setApell1(apell1.getText().toString());
+            estudiante.setApell2(apell2.getText().toString());
+            estudiante.setEdad(Integer.valueOf(edad.getText().toString()));
+            estudiante.setUser(user.getText().toString());
+            estudiante.setPassword(pass.getText().toString());
         }
         return true;
     }

@@ -44,6 +44,8 @@
     <string name="action_play_next">Play Next</string>
     <string name="backdrop_title">Cursos</string>
     <string name="backdrop_title2">Carrera</string>
+    <string name="backdrop_estudiantes">Estudiantes</string>
+    <string name="backdrop_estudiante">Estudiante</string>
     <string name="backdrop_subtitle">UNA</string>
 
     <!-- Strings related to login -->
@@ -75,7 +77,9 @@
 
     <!-- Strings related to menu -->
     <string name="item_matricula">Matricula</string>
+    <string name="item_historial">Historial</string>
     <string name="item_cursos">Cursos</string>
+    <string name="item_oferta">Oferta Académica</string>
     <string name="item_carreras">Carreras</string>
     <string name="item_estudiantes">Estudiantes</string>
     <string name="item_serch">Buscar</string>
@@ -91,5 +95,6 @@
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="title_activity_estudiantes">EstudiantesActivity</string>
+    <string name="selected">Seleccionado</string>
 
 </resources>

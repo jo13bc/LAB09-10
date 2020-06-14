@@ -1,5 +1,6 @@
-package com.miker.login.curso;
+package com.miker.login.oferta.curso;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
@@ -11,6 +12,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -30,32 +33,40 @@ import com.miker.login.Helper.RecyclerItemTouchHelper;
 import com.miker.login.NavDrawerActivity;
 import com.miker.login.R;
 import com.miker.login.ServicioCurso;
+import com.miker.login.ServicioMatricula;
+import com.miker.login.Usuario;
+import com.miker.login.curso.Curso;
+import com.miker.login.curso_x_estudiante.MatriculaActivity;
+import com.miker.login.estudiante.Estudiante;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class CursosActivity extends AppCompatActivity implements RecyclerItemTouchHelper.RecyclerItemTouchHelperListener, CursosAdapter.CursoAdapterListener {
+public class OfertaActivity extends AppCompatActivity implements OfertaAdapter.OfertaAdapterListener {
 
     private RecyclerView recyclerView;
-    private CursosAdapter adapter;
-    private List<Curso> cursoList;
-    private CoordinatorLayout coordinatorLayout;
+    private OfertaAdapter adapter;
+    private List<Oferta> cursoList;
+    private RelativeLayout coordinatorLayout;
     private SearchView searchView;
     private FloatingActionButton btn_insert;
     private ProgressDialog progressDialog;
     private String message;
     private ServicioCurso servicio;
+    private ArrayList<Curso> cursoListSelected;
+    private Usuario usuario;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_cursos);
+        setContentView(R.layout.activity_oferta);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         //toolbar fancy stuff
-        getSupportActionBar().setTitle(getString(R.string.item_cursos));
+        getSupportActionBar().setTitle(getString(R.string.item_oferta));
 
         recyclerView = findViewById(R.id.recycler_view);
         cursoList = new ArrayList<>();
@@ -66,14 +77,9 @@ public class CursosActivity extends AppCompatActivity implements RecyclerItemTou
         btn_insert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                insert_curso();
+                confirmation();
             }
         });
-
-        //delete swiping left and right
-        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT, this);
-        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
-
         // white background notification bar
         whiteNotificationBar(recyclerView);
         try {
@@ -81,6 +87,14 @@ public class CursosActivity extends AppCompatActivity implements RecyclerItemTou
         } catch (Exception ex) {
             Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
         }
+        cursoListSelected = new ArrayList<>();
+    }
+
+    private void confirmation() {
+        Intent intent = new Intent(this, MatriculaActivity.class);
+        intent.putExtra("usuario", getIntent().getExtras().getSerializable("usuario"));
+        intent.putExtra("cursos", cursoListSelected);
+        startActivity(intent);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -93,38 +107,6 @@ public class CursosActivity extends AppCompatActivity implements RecyclerItemTou
         } catch (Exception ex) {
             Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
         }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    @Override
-    public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
-        try {
-            Curso aux = (Curso) adapter.getSwipedItem(viewHolder.getAdapterPosition());
-            if (direction == ItemTouchHelper.START) {
-                if (viewHolder instanceof CursosAdapter.MyViewHolder) {
-                    // get the removed item name to display it in snack bar
-                    servicio.delete(aux);
-                    Toast.makeText(getApplicationContext(), aux.getDescripcion() + " eliminado correctamente", Toast.LENGTH_LONG).show();
-                    list list = new list();
-                    list.execute();
-                }
-            } else {
-                //If is editing a row object
-                //send data to Edit Activity
-                Intent intent = new Intent(this, CursoActivity.class);
-                intent.putExtra("object", aux);
-                intent.putExtra("usuario", getIntent().getExtras().getSerializable("usuario"));
-                adapter.notifyDataSetChanged(); //restart left swipe view
-                startActivity(intent);
-            }
-        } catch (Exception ex) {
-            Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
-        }
-    }
-
-    @Override
-    public void onItemMove(int source, int target) {
-        adapter.onItemMove(source, target);
     }
 
     @Override
@@ -196,36 +178,32 @@ public class CursosActivity extends AppCompatActivity implements RecyclerItemTou
         }
     }
 
+    @SuppressLint("ResourceAsColor")
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public void onSelected(Curso curso) { //TODO get the select item of recycleView
-        Toast.makeText(getApplicationContext(), "Selected: " + curso.getDescripcion(), Toast.LENGTH_LONG).show();
+    public void onSelected(Oferta oferta, TextView nombre, TextView creditos, RelativeLayout viewForeground) {
+        if (!checkCurso(cursoListSelected, oferta.getCurso())) {
+            oferta.setSelected(true);
+            cursoListSelected.add(oferta.getCurso());
+        }else{
+            oferta.setSelected(false);
+            cursoListSelected.remove(oferta.getCurso());
+        }
+        if (oferta.isSelected()) {
+            nombre.setTextColor(Color.WHITE);
+            creditos.setTextColor(Color.WHITE);
+            viewForeground.setBackgroundColor(Color.GRAY);
+        } else {
+            nombre.setTextColor(Color.BLACK);
+            creditos.setTextColor(Color.BLACK);
+            viewForeground.setBackgroundColor(Color.WHITE);
+        }
+        Toast.makeText(getApplicationContext(), oferta.getCurso().getDescripcion() + ((oferta.isSelected())? " seleccionado." : " deseleccionado."), Toast.LENGTH_SHORT).show();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void checkIntentInformation() {
-        try {
-            Bundle extras = getIntent().getExtras();
-            if (extras != null) {
-                Curso aux;
-                aux = (Curso) getIntent().getSerializableExtra("insert");
-                if (aux == null) {
-                    aux = (Curso) getIntent().getSerializableExtra("update");
-                    if (aux != null) {
-                        //found an item that can be updated
-                        servicio.update(aux);
-                        //check if exist
-                        Toast.makeText(getApplicationContext(), aux.getDescripcion() + " actualizado correctamente", Toast.LENGTH_LONG);
-
-                    }
-                } else {
-                    //found a new Curso Object
-                    servicio.insert(aux);
-                    Toast.makeText(getApplicationContext(), aux.getDescripcion() + " agregado correctamente", Toast.LENGTH_LONG);
-                }
-            }
-        } catch (Exception ex) {
-            message = ex.getMessage();
-        }
+        usuario = (Usuario) getIntent().getExtras().getSerializable("usuario");
         list list = new list();
         list.execute();
     }
@@ -236,7 +214,7 @@ public class CursosActivity extends AppCompatActivity implements RecyclerItemTou
         protected void onPreExecute() {
             super.onPreExecute();
             // display a progress dialog for good user experiance
-            progressDialog = new ProgressDialog(CursosActivity.this);
+            progressDialog = new ProgressDialog(OfertaActivity.this);
             progressDialog.setMessage("¡Cargando la Lista!");
             progressDialog.setCancelable(false);
             progressDialog.show();
@@ -247,7 +225,8 @@ public class CursosActivity extends AppCompatActivity implements RecyclerItemTou
         protected String doInBackground(String... params) {
             String result = "";
             try {
-                cursoList = servicio.list();
+                List<Curso> list = ServicioMatricula.getServicio(getApplicationContext()).list((Estudiante) usuario);
+                cursoList = servicio.list().stream().map(x -> new Oferta(x, checkCurso(list, x))).collect(Collectors.toList());
             } catch (Exception ex) {
                 message = ex.getMessage();
             }
@@ -268,8 +247,13 @@ public class CursosActivity extends AppCompatActivity implements RecyclerItemTou
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public boolean checkCurso(List<Curso> list, Curso curso) {
+        return list.stream().filter(x -> curso.getId() == x.getId()).count() > 0;
+    }
+
     public void showCursos() {
-        adapter = new CursosAdapter(cursoList, this);
+        adapter = new OfertaAdapter(cursoList, this);
 
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
@@ -279,11 +263,5 @@ public class CursosActivity extends AppCompatActivity implements RecyclerItemTou
 
         //refresh view
         adapter.notifyDataSetChanged();
-    }
-
-    private void insert_curso() {
-        Intent intent = new Intent(this, CursoActivity.class);
-        intent.putExtra("usuario", getIntent().getExtras().getSerializable("usuario"));
-        startActivity(intent);
     }
 }

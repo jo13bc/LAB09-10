@@ -6,15 +6,8 @@ import com.miker.login.curso.Curso;
 import java.io.Serializable;
 import java.util.ArrayList;
 
-/**
- * Created by HsingPC on 20/4/2018.
- */
-
-public class Administrador implements Serializable {
-
+public class Administrador extends Usuario {
     private String name;
-    private String user;
-    private String password;
 
     public Administrador(String name, String user, String password) {
         this.name = name;
@@ -23,9 +16,7 @@ public class Administrador implements Serializable {
     }
 
     public Administrador() {
-        this.name = "";
-        this.user = "";
-        this.password = "";
+        this(null, null, null);
     }
 
     public String getName() {
@@ -36,20 +27,9 @@ public class Administrador implements Serializable {
         this.name = name;
     }
 
-    public String getUser() {
-        return user;
-    }
-
-    public void setUser(String email) {
-        this.user = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
+    @Override
+    public boolean isSuperUser() {
+        return true;
     }
 
     @Override

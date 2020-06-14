@@ -54,29 +54,27 @@ public class CursoActivity extends AppCompatActivity {
 
     private void prepare_datas() {
         Bundle extras = getIntent().getExtras();
-        if (extras != null) {
+        String tipo;
+        if (extras.getSerializable("object") != null) {
             load_curso((Curso) getIntent().getSerializableExtra("object"));
-            btn_insert_update.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    insert_update("update");
-                }
-            });
+            tipo = "update";
         } else {
             clean();
-            btn_insert_update.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    insert_update("insert");
-                }
-            });
+            tipo = "insert";
         }
+        btn_insert_update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                insert_update(tipo);
+            }
+        });
     }
 
     private void insert_update(String type) {
         if (validateForm()) {
             Intent intent = new Intent(getBaseContext(), CursosActivity.class);
             intent.putExtra(type, curso);
+            intent.putExtra("usuario", getIntent().getExtras().getSerializable("usuario"));
             startActivity(intent);
             finish(); //prevent go back
         }

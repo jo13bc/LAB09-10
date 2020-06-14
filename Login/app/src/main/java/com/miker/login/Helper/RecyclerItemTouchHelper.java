@@ -1,18 +1,20 @@
-        package com.miker.login.Helper;
+package com.miker.login.Helper;
 
-        import android.animation.ArgbEvaluator;
-        import android.animation.ValueAnimator;
-        import android.graphics.Canvas;
-        import android.graphics.Color;
-        import android.graphics.drawable.ColorDrawable;
-        import android.graphics.drawable.Drawable;
-        import android.view.View;
+import android.animation.ArgbEvaluator;
+import android.animation.ValueAnimator;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.view.View;
 
-        import androidx.recyclerview.widget.ItemTouchHelper;
-        import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.RecyclerView;
 
-        import com.miker.login.carrera.CarrerasAdapter;
-        import com.miker.login.curso.CursosAdapter;
+import com.miker.login.carrera.CarrerasAdapter;
+import com.miker.login.curso.CursosAdapter;
+import com.miker.login.estudiante.EstudiantesAdapter;
+import com.miker.login.oferta.curso.OfertaAdapter;
 
 /**
  * Created by Luis Carrillo Rodriguez on 18/3/2018.
@@ -60,14 +62,13 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
         if (viewHolder != null) {
             //check adapter
             if (this.listener.getClass().getSimpleName().equals("EstudiantesActivity")) {
+                backgroundViewEdit = ((EstudiantesAdapter.MyViewHolder) viewHolder).viewBackgroundEdit;
+                backgroundViewDelete = ((EstudiantesAdapter.MyViewHolder) viewHolder).viewBackgroundDelete;
+                foregroundView = ((EstudiantesAdapter.MyViewHolder) viewHolder).viewForeground;
+            } else if (this.listener.getClass().getSimpleName().equals("CursosActivity")) {
                 backgroundViewEdit = ((CursosAdapter.MyViewHolder) viewHolder).viewBackgroundEdit;
                 backgroundViewDelete = ((CursosAdapter.MyViewHolder) viewHolder).viewBackgroundDelete;
                 foregroundView = ((CursosAdapter.MyViewHolder) viewHolder).viewForeground;
-            }
-             else if (this.listener.getClass().getSimpleName().equals("CursosActivity")) {
-                backgroundViewEdit = ((CarrerasAdapter.MyViewHolder) viewHolder).viewBackgroundEdit;
-               backgroundViewDelete = ((CarrerasAdapter.MyViewHolder) viewHolder).viewBackgroundDelete;
-                foregroundView = ((CarrerasAdapter.MyViewHolder) viewHolder).viewForeground;
             }
             //Selected item
             if (actionState == ItemTouchHelper.ACTION_STATE_DRAG) {
@@ -132,14 +133,13 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
     private void drawBackground(float dX) {
         if (this.listener.getClass().getSimpleName().equals("MatriculaActivity")) {
             backgroundViewDelete.setVisibility(View.VISIBLE);
+        } else if (this.listener.getClass().getSimpleName().equals("OfertaActivity")) {
+            backgroundViewEdit.setVisibility(View.VISIBLE);
+        } else if (dX > 0) {
+            backgroundViewEdit.setVisibility(View.VISIBLE);
+            backgroundViewDelete.setVisibility(View.GONE);
         } else {
-            if (dX > 0) {
-                backgroundViewEdit.setVisibility(View.VISIBLE);
-                backgroundViewDelete.setVisibility(View.GONE);
-            } else {
-                backgroundViewDelete.setVisibility(View.VISIBLE);
-                backgroundViewEdit.setVisibility(View.GONE);
-            }
+            backgroundViewEdit.setVisibility(View.GONE);
         }
     }
 
@@ -155,7 +155,6 @@ public class RecyclerItemTouchHelper extends ItemTouchHelper.SimpleCallback {
 
     public interface RecyclerItemTouchHelperListener {
         void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position);
-
         void onItemMove(int source, int target);
     }
 }

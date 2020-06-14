@@ -1,40 +1,44 @@
 package com.miker.login;
 
+import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+import androidx.core.util.Consumer;
+
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.function.Function;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class Servicio {
+    public static final int DATABASE_VERSION = 1;
+    public static final String DATABASE_NAME = "SIMA.db";
 
-    public static String run(String apiUrl) throws Exception {
-        String current = "";
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public static void connection(Context context, Consumer<SQLiteDatabase> function) {
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
         try {
-            URL url;
-            HttpURLConnection urlConnection = null;
-            try {
-                url = new URL(apiUrl);
-                urlConnection = (HttpURLConnection) url.openConnection();
-                InputStream in = urlConnection.getInputStream();
-                InputStreamReader isw = new InputStreamReader(in);
-                int data = isw.read();
-                while (data != -1) {
-                    current += (char) data;
-                    data = isw.read();
-                    System.out.print(current);
-                }
-            } catch (Exception e) {
-                throw e;
-            } finally {
-                if (urlConnection != null) {
-                    urlConnection.disconnect();
-                }
-            }
-
-        } catch (Exception e) {
-            throw e;
+            db = context.openOrCreateDatabase(DATABASE_NAME, MODE_PRIVATE, null);
+        } catch (Exception ex) {
+            throw new RuntimeException("No se logró abrir la conexión con la base de datos: " + ex.getMessage());
         }
-        // return the data to onPostExecute method
-        return current;
+        try {
+            function.accept(db);
+        } catch (Exception ex) {
+            throw new RuntimeException("No se logró ejecutar el procedure en la base de datos: " + ex.getMessage());
+        } finally {
+            try {
+                db.close();
+            } catch (Exception ex) {
+                throw new RuntimeException("No se logró cerrar la conexión con la base de datos: " + ex.getMessage());
+            }
+        }
     }
 }

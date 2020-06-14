@@ -55,13 +55,4 @@ public class Curso extends Instancia {
     public String toString() {
         return "Curso:\n\tId: " + id + "\n\tNombre: " + descripcion + "\n\tCreditos: " + creditos;
     }
-
-    @Override
-    public JSONObject getJSON() throws Exception {
-        JSONObject json = new JSONObject();
-        json.put("id", id);
-        json.put("nombre", descripcion);
-        json.put("creditos", creditos);
-        return json;
-    }
 }

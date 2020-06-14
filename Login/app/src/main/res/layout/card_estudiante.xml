@@ -63,39 +63,36 @@
     <RelativeLayout
         android:id="@+id/view_foreground"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:background="@color/viewBg">
 
-        <TextView
-            android:id="@+id/nombre"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/nombre"
-            android:textColor="@android:color/background_dark"
-            android:textSize="18sp" />
+            android:orientation="vertical"
+            android:paddingLeft="50px"
+            android:paddingRight="50px"
+            android:paddingBottom="50px">
 
-        <TextView
-            android:id="@+id/apell1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:text="@string/apell1"
-            android:textColor="@android:color/background_dark"
-            android:textSize="18sp" />
-        <TextView
-            android:id="@+id/apell2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            android:text="@string/apell2"
-            android:textColor="@android:color/background_dark"
-            android:textSize="18sp" />
-        <TextView
-            android:id="@+id/edad"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="90dp"
-            android:text="@string/edad"
-            android:textColor="@android:color/background_dark"
-            android:textSize="18sp" />
+            <TextView
+                android:id="@+id/nombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/nombre"
+                android:textColor="@android:color/background_dark"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/edad"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="@string/edad"
+                android:textColor="@android:color/background_dark"
+                android:textSize="18sp" />
+
+        </LinearLayout>
+
     </RelativeLayout>
 </FrameLayout>

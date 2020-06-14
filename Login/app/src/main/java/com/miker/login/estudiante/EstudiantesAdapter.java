@@ -22,23 +22,19 @@ import java.util.List;
  */
 public class EstudiantesAdapter extends RecyclerView.Adapter<EstudiantesAdapter.MyViewHolder> implements Filterable {
 
-    private List<Estudiante> carreraList;
-    private List<Estudiante> carreraListFiltered;
+    private List<Estudiante> estudianteList;
+    private List<Estudiante> estudianteListFiltered;
     private EstudiantesAdapter.EstudianteAdapterListener listener;
     private Estudiante object;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView nombre,apell1, apell2, edad, user, pass;
+        public TextView nombre, edad;
         public RelativeLayout viewForeground, viewBackgroundDelete, viewBackgroundEdit;
 
         public MyViewHolder(View view) {
             super(view);
             nombre = (TextView) view.findViewById(R.id.nombre);
-            apell1 = (TextView) view.findViewById(R.id.apell1);
-            apell2 = (TextView) view.findViewById(R.id.apell2);
             edad = (TextView) view.findViewById(R.id.edad);
-            user = (TextView) view.findViewById(R.id.user);
-            pass = (TextView) view.findViewById(R.id.pass);
             viewBackgroundDelete = view.findViewById(R.id.view_background_delete);
             viewBackgroundEdit = view.findViewById(R.id.view_background_edit);
             viewForeground = view.findViewById(R.id.view_foreground);
@@ -46,45 +42,41 @@ public class EstudiantesAdapter extends RecyclerView.Adapter<EstudiantesAdapter.
                 @Override
                 public void onClick(View view) {
                     // send selected contact in callback
-                    listener.onSelected(carreraListFiltered.get(getAdapterPosition()));
+                    listener.onSelected(estudianteListFiltered.get(getAdapterPosition()));
                 }
             });
         }
     }
 
-    public EstudiantesAdapter(List<Estudiante> carreraList, EstudiantesAdapter.EstudianteAdapterListener listener) {
-        this.carreraList = carreraList;
+    public EstudiantesAdapter(List<Estudiante> estudianteList, EstudiantesAdapter.EstudianteAdapterListener listener) {
+        this.estudianteList = estudianteList;
         this.listener = listener;
-        this.carreraListFiltered = carreraList;
+        this.estudianteListFiltered = estudianteList;
     }
 
     @Override
     public EstudiantesAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.carrera_card, parent, false);
+                .inflate(R.layout.card_estudiante, parent, false);
 
         return new EstudiantesAdapter.MyViewHolder(itemView);
     }
 
     @Override
     public void onBindViewHolder(final EstudiantesAdapter.MyViewHolder holder, final int position) {
-        final Estudiante estudiante = carreraListFiltered.get(position);
-        holder.nombre.setText(estudiante.getNombre());
-        holder.apell1.setText(estudiante.getApell1());
-        holder.apell2.setText(estudiante.getApell2());
-        holder.edad.setText(estudiante.getEdad());
-        holder.user.setText(estudiante.getUser());
-        holder.pass.setText(estudiante.getPassword());
+        final Estudiante estudiante = estudianteListFiltered.get(position);
+        holder.nombre.setText(estudiante.getNombre_Completo());
+        holder.edad.setText(String.valueOf(estudiante.getEdad() + ((estudiante.getEdad() > 1) ? " años." : " año.")));
     }
 
     @Override
     public int getItemCount() {
-        return carreraListFiltered.size();
+        return estudianteListFiltered.size();
     }
 
     public void removeItem(int position) {
-        object = carreraListFiltered.remove(position);
-        Iterator<Estudiante> iter = carreraList.iterator();
+        object = estudianteListFiltered.remove(position);
+        Iterator<Estudiante> iter = estudianteList.iterator();
         while (iter.hasNext()) {
             Estudiante aux = iter.next();
             if (object.equals(aux))
@@ -96,11 +88,11 @@ public class EstudiantesAdapter extends RecyclerView.Adapter<EstudiantesAdapter.
 
     public void restoreItem(int position) {
 
-        if (carreraListFiltered.size() == carreraList.size()) {
-            carreraListFiltered.add(position, object);
+        if (estudianteListFiltered.size() == estudianteList.size()) {
+            estudianteListFiltered.add(position, object);
         } else {
-            carreraListFiltered.add(position, object);
-            carreraList.add(object);
+            estudianteListFiltered.add(position, object);
+            estudianteList.add(object);
         }
         notifyDataSetChanged();
         // notify item added by position
@@ -108,32 +100,32 @@ public class EstudiantesAdapter extends RecyclerView.Adapter<EstudiantesAdapter.
     }
 
     public Estudiante getSwipedItem(int index) {
-        if (this.carreraList.size() == this.carreraListFiltered.size()) { //not filtered yet
-            return carreraList.get(index);
+        if (this.estudianteList.size() == this.estudianteListFiltered.size()) { //not filtered yet
+            return estudianteList.get(index);
         } else {
-            return carreraListFiltered.get(index);
+            return estudianteListFiltered.get(index);
         }
     }
 
     public void onItemMove(int fromPosition, int toPosition) {
-        if (carreraList.size() == carreraListFiltered.size()) { // without filter
+        if (estudianteList.size() == estudianteListFiltered.size()) { // without filter
             if (fromPosition < toPosition) {
                 for (int i = fromPosition; i < toPosition; i++) {
-                    Collections.swap(carreraList, i, i + 1);
+                    Collections.swap(estudianteList, i, i + 1);
                 }
             } else {
                 for (int i = fromPosition; i > toPosition; i--) {
-                    Collections.swap(carreraList, i, i - 1);
+                    Collections.swap(estudianteList, i, i - 1);
                 }
             }
         } else {
             if (fromPosition < toPosition) {
                 for (int i = fromPosition; i < toPosition; i++) {
-                    Collections.swap(carreraListFiltered, i, i + 1);
+                    Collections.swap(estudianteListFiltered, i, i + 1);
                 }
             } else {
                 for (int i = fromPosition; i > toPosition; i--) {
-                    Collections.swap(carreraListFiltered, i, i - 1);
+                    Collections.swap(estudianteListFiltered, i, i - 1);
                 }
             }
         }
@@ -147,27 +139,32 @@ public class EstudiantesAdapter extends RecyclerView.Adapter<EstudiantesAdapter.
             protected FilterResults performFiltering(CharSequence charSequence) {
                 String charString = charSequence.toString();
                 if (charString.isEmpty()) {
-                    carreraListFiltered = carreraList;
+                    estudianteListFiltered = estudianteList;
                 } else {
                     List<Estudiante> filteredList = new ArrayList<>();
-                    for (Estudiante row : carreraList) {
+                    for (Estudiante row : estudianteList) {
                         // filter use two parameters
-                        if (row.getNombre().toLowerCase().contains(charString.toLowerCase())) {
+                        if (
+                                row.getNombre().toLowerCase().contains(charString.toLowerCase())
+                                        || row.getApell1().toLowerCase().contains(charString.toLowerCase())
+                                        || row.getApell2().toLowerCase().contains(charString.toLowerCase())
+                                        || String.valueOf(row.getEdad()).contains(charString.toLowerCase())
+                        ) {
                             filteredList.add(row);
                         }
                     }
 
-                    carreraListFiltered = filteredList;
+                    estudianteListFiltered = filteredList;
                 }
 
                 FilterResults filterResults = new FilterResults();
-                filterResults.values = carreraListFiltered;
+                filterResults.values = estudianteListFiltered;
                 return filterResults;
             }
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                carreraListFiltered = (ArrayList<Estudiante>) filterResults.values;
+                estudianteListFiltered = (ArrayList<Estudiante>) filterResults.values;
                 notifyDataSetChanged();
             }
         };

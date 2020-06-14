@@ -51,11 +51,15 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".estudiante.EstudiantesActivity"
-            android:label="Estudiantes"
+            android:label="@string/backdrop_estudiantes"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".estudiante.EstudianteActivity"
-            android:label="Estudiante"
+            android:label="@string/backdrop_estudiante"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".oferta.curso.OfertaActivity"
+            android:label="@string/item_oferta"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

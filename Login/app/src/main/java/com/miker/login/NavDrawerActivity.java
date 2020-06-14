@@ -18,19 +18,15 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.gson.Gson;
 import com.miker.login.curso.CursosActivity;
 import com.miker.login.curso_x_estudiante.MatriculaActivity;
-import com.miker.login.estudiante.Estudiante;
 import com.miker.login.estudiante.EstudiantesActivity;
+import com.miker.login.oferta.curso.OfertaActivity;
 
-public class NavDrawerActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class NavDrawerActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private SharedPreferences mPrefs;
-    private Model model;
-    Administrador administrador;
-    Estudiante estudiante;
+    private Usuario usuario;
 
 
     @Override
@@ -60,22 +56,17 @@ public class NavDrawerActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        model = (Model) getIntent().getSerializableExtra("model");
-        administrador = model.getLoggedAdministrador();
-        estudiante = model.getLoggedEstudiante();
+        usuario = (Usuario) getIntent().getSerializableExtra("usuario");
         Menu menu = navigationView.getMenu();
 
         LinearLayout layout = (LinearLayout) navigationView.getHeaderView(0);
 
-        if(administrador!= null){
+        if (usuario.isSuperUser()) {
             menu.findItem(R.id.nav_matricula).setVisible(false);
-        }
-        if(estudiante != null){
+        } else {
             menu.findItem(R.id.nav_cursos).setVisible(false);
             menu.findItem(R.id.nav_estudiantes).setVisible(false);
         }
-
-
     }
 
     @Override
@@ -113,39 +104,33 @@ public class NavDrawerActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        Intent  intent = null;
-        Gson gson = new Gson();
-        String json = mPrefs.getString(getString(R.string.preference_user_key), "");
+        Intent intent = null;
 
-        if(model == null){
-            model = new Model();
+        if (usuario == null) {
+            usuario = new Administrador();
         }
         int id = item.getItemId();
 
-        if(!model.esAdmin){
-            if (id == R.id.nav_matricula) {
-                intent = new Intent(NavDrawerActivity.this, MatriculaActivity.class);
-                NavDrawerActivity.this.startActivity(intent);
-                // Handle the camera action
-            }else if (id == R.id.nav_logout) {
-                finish();
-                intent = new Intent(NavDrawerActivity.this, LoginActivity.class);
-                NavDrawerActivity.this.startActivity(intent);
+        if (id == R.id.nav_logout) {
+            finish();
+            intent = new Intent(NavDrawerActivity.this, LoginActivity.class);
+        } else {
+            if (usuario.isSuperUser()) {
+                if (id == R.id.nav_cursos) {
+                    intent = new Intent(NavDrawerActivity.this, CursosActivity.class);
+                } else if (id == R.id.nav_estudiantes) {
+                    intent = new Intent(NavDrawerActivity.this, EstudiantesActivity.class);
+                }
+            } else {
+                if (id == R.id.nav_matricula) {
+                    intent = new Intent(NavDrawerActivity.this, OfertaActivity.class);
+                    // Handle the camera action
+                } else if (id == R.id.nav_historial) {
+                    intent = new Intent(NavDrawerActivity.this, MatriculaActivity.class);
+                }
             }
-        }else{
-            if (id == R.id.nav_cursos) {
-                intent = new Intent(NavDrawerActivity.this, CursosActivity.class);
-                NavDrawerActivity.this.startActivity(intent);
-            } else if (id == R.id.nav_estudiantes) {
-                intent = new Intent(NavDrawerActivity.this, EstudiantesActivity.class);
-                NavDrawerActivity.this.startActivity(intent);
-            }  else if (id == R.id.nav_logout) {
-                finish();
-                intent = new Intent(NavDrawerActivity.this, LoginActivity.class);
-                NavDrawerActivity.this.startActivity(intent);
-            }
+            intent.putExtra("usuario", usuario);
         }
-        intent.putExtra("model", model);
         startActivityForResult(intent, 0);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

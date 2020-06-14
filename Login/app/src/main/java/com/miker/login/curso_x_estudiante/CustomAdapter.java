@@ -8,22 +8,25 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.miker.login.R;
+import com.miker.login.curso.Curso;
 import com.miker.login.estudiante.Estudiante;
+
+import java.util.List;
 
 public class CustomAdapter extends BaseAdapter {
     Context context;
-    Estudiante estudiante;
+    List<Curso> cursoList;
     LayoutInflater inflter;
 
-    public CustomAdapter(Context applicationContext, Estudiante estudiante) {
+    public CustomAdapter(Context applicationContext, List<Curso> cursoList) {
         this.context = context;
-        this.estudiante = estudiante;
+        this.cursoList = cursoList;
         inflter = (LayoutInflater.from(applicationContext));
     }
 
     @Override
     public int getCount() {
-        return estudiante.getCursos().size();
+        return cursoList.size();
     }
 
     @Override
@@ -41,8 +44,8 @@ public class CustomAdapter extends BaseAdapter {
         view = inflter.inflate(R.layout.cardview_curso, null);
         TextView descripcion = view.findViewById(R.id.descripcion);
         TextView creditos = view.findViewById(R.id.creditos);
-        descripcion.setText(estudiante.getCursos().get(i).getDescripcion());
-        creditos.setText("Cantidad de Créditos: " + String.valueOf(estudiante.getCursos().get(i).getCreditos()));
+        descripcion.setText(cursoList.get(i).getDescripcion());
+        creditos.setText("Cantidad de Créditos: " + String.valueOf(cursoList.get(i).getCreditos()));
         return view;
     }
 }

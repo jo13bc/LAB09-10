@@ -9,6 +9,10 @@
             android:icon="@android:drawable/ic_menu_today"
             android:title="@string/item_matricula" />
         <item
+            android:id="@+id/nav_historial"
+            android:icon="@android:drawable/ic_menu_month"
+            android:title="@string/item_historial" />
+        <item
             android:id="@+id/nav_cursos"
             android:icon="@android:drawable/ic_menu_sort_by_size"
             android:title="@string/item_cursos" />
