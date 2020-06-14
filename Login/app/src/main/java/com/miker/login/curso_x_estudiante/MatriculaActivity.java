@@ -1,15 +1,22 @@
 package com.miker.login.curso_x_estudiante;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewManager;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.miker.login.NavDrawerActivity;
@@ -18,11 +25,13 @@ import com.miker.login.ServicioMatricula;
 import com.miker.login.Usuario;
 import com.miker.login.curso.Curso;
 import com.miker.login.estudiante.Estudiante;
+import com.miker.login.oferta.curso.Oferta;
+import com.miker.login.oferta.curso.OfertaAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MatriculaActivity extends AppCompatActivity {
+public class MatriculaActivity extends AppCompatActivity implements CustomAdapter.CustomAdapterListener {
 
     private Button btn_accept;
     private Button btn_cancel;
@@ -31,6 +40,7 @@ public class MatriculaActivity extends AppCompatActivity {
     private Usuario usuario;
     private ServicioMatricula servicio;
     private List<Curso> cursos;
+    private boolean matricula = false;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -40,6 +50,20 @@ public class MatriculaActivity extends AppCompatActivity {
         matching();
         //Prepare view
         prepare_datas();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        if (getIntent().getExtras().getSerializable("cursos") == null) {
+            titlename.setText("Historico de Cursos Matriculados");
+            btn_accept.setVisibility(View.INVISIBLE);
+            btn_cancel.setVisibility(View.INVISIBLE);
+        } else {
+            matricula = true;
+            titlename.setText("Lista de Cursos a Matricular");
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -69,10 +93,11 @@ public class MatriculaActivity extends AppCompatActivity {
                 btn_accept.setVisibility(View.INVISIBLE);
                 btn_cancel.setVisibility(View.INVISIBLE);
             } else {
+                matricula = true;
                 this.cursos = cursos;
                 titlename.setText("Lista de Cursos a Matricular");
             }
-            CustomAdapter adapter = new CustomAdapter(getApplicationContext(), this.cursos);
+            CustomAdapter adapter = new CustomAdapter(getApplicationContext(), this.cursos, this);
             cursosList.setAdapter(adapter);
             if (this.cursos.isEmpty()) {
                 if (cursos == null) {
@@ -139,6 +164,42 @@ public class MatriculaActivity extends AppCompatActivity {
             }
         } catch (Exception ex) {
             Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onSelected(Curso curso) {
+        if (matricula) {
+            Dialog dialog = new Dialog(this);
+            dialog.setContentView(R.layout.activity_matricula);
+            ListView lv = (ListView ) dialog.findViewById(R.id.list);
+            lv.setAdapter(new CustomAdapter(getApplicationContext(), this.cursos, this));
+            dialog.setCancelable(true);
+            dialog.setTitle("Confirmación de Acción");
+            dialog.setCancelable(true);
+            dialog.show();
+
+            setContentView(R.layout.activity_matricula);
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+            builder.setMessage("¿Esta seguro que desea desmatricular este curso?")
+                    .setTitle("Confirmación de Acción");
+            builder.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.N)
+                public void onClick(DialogInterface dialog, int id) {
+                    servicio.delete((Estudiante) usuario, curso);
+                    Toast.makeText(getApplicationContext(), "Se desmatriculó exitosamente el curso " + curso.getDescripcion(), Toast.LENGTH_LONG).show();
+                    prepare_datas();
+                }
+            });
+            builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    Toast.makeText(getApplicationContext(), "Se canceló la desmatriculación de " + curso.getDescripcion(), Toast.LENGTH_LONG).show();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.miker.login.oferta.curso;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
@@ -12,6 +13,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +39,7 @@ import com.miker.login.ServicioCurso;
 import com.miker.login.ServicioMatricula;
 import com.miker.login.Usuario;
 import com.miker.login.curso.Curso;
+import com.miker.login.curso_x_estudiante.CustomAdapter;
 import com.miker.login.curso_x_estudiante.MatriculaActivity;
 import com.miker.login.estudiante.Estudiante;
 
@@ -91,10 +95,28 @@ public class OfertaActivity extends AppCompatActivity implements OfertaAdapter.O
     }
 
     private void confirmation() {
-        Intent intent = new Intent(this, MatriculaActivity.class);
-        intent.putExtra("usuario", getIntent().getExtras().getSerializable("usuario"));
-        intent.putExtra("cursos", cursoListSelected);
-        startActivity(intent);
+        Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.activity_matricula);
+        ListView lv = (ListView) dialog.findViewById(R.id.list);
+        Button btn_accept = (Button) dialog.findViewById(R.id.btn_accept);
+        Button btn_cancel = (Button) dialog.findViewById(R.id.btn_cancel);
+        lv.setAdapter(new CustomAdapter(getApplicationContext(), this.cursoListSelected, null));
+        btn_accept.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View v) {
+                insert();
+            }
+        });
+        btn_accept.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setTitle("Confirmación de Acción");
+        dialog.show();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -185,7 +207,7 @@ public class OfertaActivity extends AppCompatActivity implements OfertaAdapter.O
         if (!checkCurso(cursoListSelected, oferta.getCurso())) {
             oferta.setSelected(true);
             cursoListSelected.add(oferta.getCurso());
-        }else{
+        } else {
             oferta.setSelected(false);
             cursoListSelected.remove(oferta.getCurso());
         }
@@ -198,7 +220,7 @@ public class OfertaActivity extends AppCompatActivity implements OfertaAdapter.O
             creditos.setTextColor(Color.BLACK);
             viewForeground.setBackgroundColor(Color.WHITE);
         }
-        Toast.makeText(getApplicationContext(), oferta.getCurso().getDescripcion() + ((oferta.isSelected())? " seleccionado." : " deseleccionado."), Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), oferta.getCurso().getDescripcion() + ((oferta.isSelected()) ? " seleccionado." : " deseleccionado."), Toast.LENGTH_SHORT).show();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -263,5 +285,16 @@ public class OfertaActivity extends AppCompatActivity implements OfertaAdapter.O
 
         //refresh view
         adapter.notifyDataSetChanged();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void insert() {
+        try {
+            for (Curso curso : cursoListSelected) {
+                ServicioMatricula.getServicio(getApplicationContext()).insert((Estudiante)usuario, curso);
+            }
+        } catch (Exception ex) {
+            Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
+        }
     }
 }
